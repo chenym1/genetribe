@@ -117,9 +117,9 @@ def blast(dicr2,name1,name2,evalue,num_threads,fa_str="."):
 				db1 = tmp_out+name1+'_db/'+name1
 				db2 = tmp_out+name2+'_db/'+name2
 				#
-				sh(DIR+'/longestfasta.py -i '+fa1+' -s '+fa_str+' > '+long_fa1)
+				sh(DIR+'/longestfasta -i '+fa1+' -s '+fa_str+' > '+long_fa1)
 				sh('makeblastdb -in '+long_fa1+' -parse_seqids -hash_index -dbtype prot -out '+db1)
-				sh(DIR+'/longestfasta.py -i '+fa2+' -s '+fa_str+' > '+long_fa2)
+				sh(DIR+'/longestfasta -i '+fa2+' -s '+fa_str+' > '+long_fa2)
 				sh('makeblastdb -in '+long_fa2+' -parse_seqids -hash_index -dbtype prot -out '+db2)
 				#
 				blast_task = []
@@ -146,7 +146,7 @@ def blast(dicr2,name1,name2,evalue,num_threads,fa_str="."):
 				fa1 = dicr+name1+'.fa'
 				long_fa1 = tmp_out+name1+'_long.fa'
 				db1 = tmp_out+name1+'_db/'+name1
-				sh(DIR+'/longestfasta.py -i '+fa1+' -s '+fa_str+' > '+long_fa1)
+				sh(DIR+'/longestfasta -i '+fa1+' -s '+fa_str+' > '+long_fa1)
 				sh('makeblastdb -in '+long_fa1+' -parse_seqids -hash_index -dbtype prot -out '+db1)
 				blast_task = ['blastp -query '+long_fa1+' -db '+db1+' -evalue '+evalue+' -num_threads '+str(num_threads)+' -outfmt 6 -out '+dicr+name1+'_'+name1+'.blast']
 				sh(blast_task[0])

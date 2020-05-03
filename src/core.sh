@@ -76,7 +76,7 @@ do
         esac
 done
 #
-dec=$(dirname $(readlink -f "$0"))
+dec=`echo $(dirname $(readlink -f "$0")) | sed 's/src/bin/g'`
 #==
 echo `gettime`"prepared the required original files..."
 
@@ -151,10 +151,10 @@ ${dec}/coreSplitbyChromosomeGroup \
 
 for value in 0 5 10 15 20 25 30 35 40 45 50 55 60 65 70 75 80 85 90 95 99;do
 
-	${dec}/coreSetWeight.py -i ${aname}_${bname}_chr11xchr22.score -a ${value} -f ${score_threshold-75} \
+	${dec}/coreSetWeight -i ${aname}_${bname}_chr11xchr22.score -a ${value} -f ${score_threshold-75} \
 		> ${aname}_${bname}_chr11xchr22.weighted_score
 
-	${dec}/coreSetWeight.py -i ${bname}_${aname}_chr22xchr11.score -a ${value} -f ${score_threshold-75} \
+	${dec}/coreSetWeight -i ${bname}_${aname}_chr22xchr11.score -a ${value} -f ${score_threshold-75} \
 		> ${bname}_${aname}_chr22xchr11.weighted_score
 
 	totalnum=`cat ${aname}.bed | wc -l`

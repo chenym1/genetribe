@@ -10,10 +10,10 @@ def lns(name1,name2,confidence_stat):
 	dirc = './output/'
 	if name1 != name2:
 		out_dic = './output/'
-		sh(' '.join([DIR+'/coreFilterRedundancy.py','-i',dirc+name1+'_'+name2+'.blast','>',out_dic+name1+'_'+name2+'.blast2']))
-		sh(' '.join([DIR+'/coreFilterRedundancy.py','-i',dirc+name1+'_'+name1+'.blast','>',out_dic+name1+'_'+name1+'.blast2']))
-		sh(' '.join([DIR+'/coreFilterRedundancy.py','-i',dirc+name2+'_'+name1+'.blast','>',out_dic+name2+'_'+name1+'.blast2']))
-		sh(' '.join([DIR+'/coreFilterRedundancy.py','-i',dirc+name2+'_'+name2+'.blast','>',out_dic+name2+'_'+name2+'.blast2']))
+		sh(' '.join([DIR+'/coreFilterRedundancy','-i',dirc+name1+'_'+name2+'.blast','>',out_dic+name1+'_'+name2+'.blast2']))
+		sh(' '.join([DIR+'/coreFilterRedundancy','-i',dirc+name1+'_'+name1+'.blast','>',out_dic+name1+'_'+name1+'.blast2']))
+		sh(' '.join([DIR+'/coreFilterRedundancy','-i',dirc+name2+'_'+name1+'.blast','>',out_dic+name2+'_'+name1+'.blast2']))
+		sh(' '.join([DIR+'/coreFilterRedundancy','-i',dirc+name2+'_'+name2+'.blast','>',out_dic+name2+'_'+name2+'.blast2']))
 		blast_path1 = os.path.abspath(out_dic+name1+'_'+name2+'.blast2')
 		blast_path2 = os.path.abspath(out_dic+name2+'_'+name1+'.blast2')
 		sh(' '.join(['ln -s',blast_path1,out_dic+name1+'.'+name2+'.last']))
@@ -33,7 +33,7 @@ def lns(name1,name2,confidence_stat):
 	else:
 		out_dic = './output/'
 		name2 = name2+'itself'
-		sh(' '.join([DIR+'/coreFilterRedundancy.py','-i',dirc+name1+'_'+name1+'.blast','>',out_dic+name1+'_'+name2+'.blast2']))
+		sh(' '.join([DIR+'/coreFilterRedundancy','-i',dirc+name1+'_'+name1+'.blast','>',out_dic+name1+'_'+name2+'.blast2']))
 		blast_path1 = os.path.abspath(out_dic+name1+'_'+name2+'.blast2')
 		sh(' '.join(['ln -s ',blast_path1,out_dic+name1+'_'+name1+'.blast2']))
 		sh(' '.join(['ln -s ',blast_path1,out_dic+name2+'_'+name1+'.blast2']))

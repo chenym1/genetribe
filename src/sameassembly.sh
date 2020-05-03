@@ -18,10 +18,9 @@ Usage () {
         echo "  -h Show this message and exit"
         echo "  -l <string> Prefix name of first assembly"
         echo "  -f <string> Prefix name of second assembly"
-        echo "  -d <dir> bed genelength file in <dir>"
         exit 1
 }
-while getopts "hl:f:d:" opt
+while getopts "hl:f:" opt
 do
     case $opt in
         h)
@@ -34,9 +33,6 @@ do
         f)
                 bname=$OPTARG
                 ;;
-        d)
-                directory=$OPTARG
-                ;;
         ?)
                 echo "Unknow argument!"
                 exit 1
@@ -44,19 +40,19 @@ do
         esac
 done
 
-#
+
 not_file=""
-if [ ! -f "${directory}/${aname}.bed" ];then
-	not_file=${not_file}" ${directory}/${aname}.bed"
+if [ ! -f "${aname}.bed" ];then
+	not_file=${not_file}" ${aname}.bed"
 fi
-if [ ! -f "${directory}/${bname}.bed" ];then
-	not_file=${not_file}" ${directory}/${bname}.bed"
+if [ ! -f "${bname}.bed" ];then
+	not_file=${not_file}" ${bname}.bed"
 fi
-if [ ! -f "${directory}/${aname}_geneLength.txt" ];then
-	not_file=${not_file}" ${directory}/${aname}_geneLength.txt"
+if [ ! -f "${aname}_geneLength.txt" ];then
+	not_file=${not_file}" ${aname}_geneLength.txt"
 fi
-if [ ! -f "${directory}/${bname}_geneLength.txt" ];then
-	not_file=${not_file}" ${directory}/${bname}_geneLength.txt"
+if [ ! -f "${bname}_geneLength.txt" ];then
+	not_file=${not_file}" ${bname}_geneLength.txt"
 fi
 
 if [ "$not_file" != "" ];then
@@ -68,10 +64,13 @@ rm -rf ./output
 mkdir ./output
 cd ./output
 #
-dec=$(dirname $(readlink -f "$0"))
+dec=`echo $(dirname $(readlink -f "$0")) | sed 's/src/bin/g'`
 
-ln -s ${directory}/${aname}.bed ./
-ln -s ${directory}/${bname}.bed ./
+
+ln -s ../${aname}.bed ./
+ln -s ../${bname}.bed ./
+ln -s ../${aname}_geneLength.txt ./
+ln -s ../${bname}_geneLength.txt ./
 #
 
 bedtools intersect -a ${aname}.bed -b ${bname}.bed -sorted -wao | \
@@ -79,19 +78,19 @@ bedtools intersect -a ${aname}.bed -b ${bname}.bed -sorted -wao | \
 bedtools intersect -a ${bname}.bed -b ${aname}.bed -sorted -wao | \
                 gawk -v OFS='\t' '{if($13!=""&&$13!="0"){print $4,$10,$13}}' > ${bname}_${aname}.overlap
 #
-${dec}/sameassemblyMatchscore ${directory}/${aname}_geneLength.txt ${aname}_${bname}.overlap > ${aname}_${bname}.one2many
-${dec}/sameassemblyMatchscore ${directory}/${bname}_geneLength.txt ${bname}_${aname}.overlap > ${bname}_${aname}.one2many
+${dec}/sameassemblyMatchscore -a ${aname}_geneLength.txt -b ${aname}_${bname}.overlap > ${aname}_${bname}.one2many
+${dec}/sameassemblyMatchscore -a ${bname}_geneLength.txt -b ${bname}_${aname}.overlap > ${bname}_${aname}.one2many
 #
 ${dec}/RBH -a ${aname}_${bname}.overlap -b ${bname}_${aname}.overlap | cut -f1,2 | sort | uniq > ${aname}_${bname}.RBH
 #
-${dec}/sameassemblyBestHit ${aname}_${bname}.one2many ${aname}_${bname}.RBH > ${aname}_${bname}.single_end
-${dec}/sameassemblyBestHit ${bname}_${aname}.one2many ${aname}_${bname}.RBH > ${bname}_${aname}.single_end
+${dec}/sameassemblyBestHit -a ${aname}_${bname}.one2many -b ${aname}_${bname}.RBH > ${aname}_${bname}.single_end
+${dec}/sameassemblyBestHit -a ${bname}_${aname}.one2many -b ${aname}_${bname}.RBH > ${bname}_${aname}.single_end
 #
 cat ${aname}_${bname}.RBH | gawk -vOFS='\t' '{print $1,$2,"RBH"}' > ${aname}_${bname}.one2one
 cat ${aname}_${bname}.single_end | gawk -vOFS='\t' '{print $1,$2,"SBH"}' >> ${aname}_${bname}.one2one
 cat ${aname}_${bname}.RBH | gawk -vOFS='\t' '{print $2,$1,"RBH"}' > ${bname}_${aname}.one2one
 cat ${bname}_${aname}.single_end | gawk -vOFS='\t' '{print $1,$2,"SBH"}' >>${bname}_${aname}.one2one
 #
-mv ${aname}_${bname}.one2one ${bname}_${aname}.one2one ${aname}_${bname}.one2many ${bname}_${aname}.one2many ${aname}_${bname}.overlap ${bname}_${aname}.overlap ../
+mv ${aname}_${bname}.one2one ${bname}_${aname}.one2one ${aname}_${bname}.one2many ${bname}_${aname}.one2many ../
 cd ..
 rm -rf ./output
