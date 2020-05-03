@@ -1,0 +1,52 @@
+#!/usr/bin/env python3
+import sys
+import subprocess
+import os
+
+def PrintVersion() :
+	print ("Version: 0.1.0 (2020-05-02)")
+
+argv_len = len(sys.argv)
+
+DIR=os.path.dirname(sys.argv[0])
+
+if (argv_len) == 1  or sys.argv[1] in ["-h", "-H", "--help"]:
+	print ("")
+	print ("Program: genetribe (tools for homologoues inference)")
+	PrintVersion()
+	print ("")
+	print ("Usage: genetribe <command> [options]")
+	print ("")
+	print ("Subcommands include:")
+	print ("")
+	print ("[ pipeline ]")
+	print ("     core           The core workflow of genetribe")
+	print ("     sameassembly   The Homolog inference for same assembly")
+	print ("")
+	print ("[ tools ]")
+	print ("     RBH            Obtain Reciprocal Best Hits (RBH)")
+	print ("     CBS            Calculate Collinearity Block Score(CBS)")
+	print ("     longestcds     Extract the longest protein sequence from protein fasta")
+	print ("")
+	print ("Author: Chen,Yongming; chen_yongming@126.com")
+	print ("")
+else:
+	if argv_len == 2 or sys.argv[2] in ["-h", "-H", "--help"]:
+		command = ["-h"]
+	else:
+		command = sys.argv[2:]
+	code = sys.argv[1]
+	if code == "core":
+		subprocess.call([DIR + "/bin/core"]+ command)
+	elif code == "sameassembly":
+		subprocess.call([DIR + "/bin/sameassembly"]+ command)
+	elif code == "RBH":
+		subprocess.call([DIR + "/bin/RBH"]+ command)
+	elif code == "longestcds":
+		subprocess.call([DIR + "/bin/longestfasta"]+ command)
+	elif code == "CBS":
+		subprocess.call([DIR + "/bin/coreCBS"]+ command)
+
+
+
+
