@@ -1,4 +1,25 @@
 #!/usr/bin/env bash
+
+#     genetribe - core.sh
+#     Copyright (C) Yongming Chen
+#     Contact: chen_yongming@126.com
+# 
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+# THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+# FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+# DEALINGS IN THE SOFTWARE.
+
 set -e
 
 if [ -z "$1" ]; then
@@ -118,7 +139,12 @@ for key in ${aname}_${bname} ${bname}_${aname};do
 		${stat_confidence} \
 		-o ${key}.chrinfo > ${key}.score1
 
+	echo ""
+	echo ""
 	python -m jcvi.compara.catalog ortholog ${key1} ${key2}
+	echo ""
+	echo ""
+
 	${dec}/coreCBS -i ${key1}.${key2}.lifted.anchors -a ${key1}.bed -b ${key2}.bed -o ${key}
 
 	${dec}/coreMergeScore -i ${key}.score1 -c ${key}.block_pos -a ${key1}.bed -b ${key2}.bed > ${key}.score2
@@ -260,16 +286,24 @@ for key in ${aname}_${bname} ${bname}_${aname};do
 	${dec}/corebestUnGene -i ${key}.raw_total3 -t ${key}.chrinfo \
 		-c ${key}.weighted_score -b ${key1}.bed > ${key}.total
 
+	${dec}/coreSingleton -a ${key1}.bed -b ${key}.total > ${key}.singleton
+
 done
 
 #===
+
 mv ${aname}_${bname}.weighted_score ../${aname}_${bname}.one2many
 mv ${bname}_${aname}.weighted_score ../${bname}_${aname}.one2many
 mv ${aname}_${bname}.total ../${aname}_${bname}.one2one
 mv ${bname}_${aname}.total ../${bname}_${aname}.one2one
-
+mv ${aname}_${bname}.singleton ../
+mv ${bname}_${aname}.singleton ../
 cd ..
-rm -rf output
 
+cat ${aname}_${bname}.one2one | gawk -vOFS="\t" '{if($3=="RBH")print}' > ${aname}_${bname}.RBH
+cat ${aname}_${bname}.one2one | gawk -vOFS="\t" '{if($3=="SBH")print}' > ${aname}_${bname}.SBH
+cat ${bname}_${aname}.one2one | gawk -vOFS="\t" '{if($3=="SBH")print}' > ${bname}_${aname}.SBH
+
+rm -rf output
 echo `gettime`"done!"
 

@@ -1,5 +1,25 @@
 #!/usr/bin/env bash
 
+#     genetribe - sameassembly.sh
+#     Copyright (C) Yongming Chen
+#     Contact: chen_yongming@126.com
+# 
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+# THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+# FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+# DEALINGS IN THE SOFTWARE.
+
 set -e
 
 if [ -z "$1" ]; then
@@ -48,11 +68,11 @@ fi
 if [ ! -f "${bname}.bed" ];then
 	not_file=${not_file}" ${bname}.bed"
 fi
-if [ ! -f "${aname}_geneLength.txt" ];then
-	not_file=${not_file}" ${aname}_geneLength.txt"
+if [ ! -f "${aname}.genelength" ];then
+	not_file=${not_file}" ${aname}.genelength"
 fi
-if [ ! -f "${bname}_geneLength.txt" ];then
-	not_file=${not_file}" ${bname}_geneLength.txt"
+if [ ! -f "${bname}.genelength" ];then
+	not_file=${not_file}" ${bname}.genelength"
 fi
 
 if [ "$not_file" != "" ];then
@@ -69,8 +89,8 @@ dec=`echo $(dirname $(readlink -f "$0")) | sed 's/src/bin/g'`
 
 ln -s ../${aname}.bed ./
 ln -s ../${bname}.bed ./
-ln -s ../${aname}_geneLength.txt ./
-ln -s ../${bname}_geneLength.txt ./
+ln -s ../${aname}.genelength ./
+ln -s ../${bname}.genelength ./
 #
 
 bedtools intersect -a ${aname}.bed -b ${bname}.bed -sorted -wao | \
@@ -78,8 +98,8 @@ bedtools intersect -a ${aname}.bed -b ${bname}.bed -sorted -wao | \
 bedtools intersect -a ${bname}.bed -b ${aname}.bed -sorted -wao | \
                 gawk -v OFS='\t' '{if($13!=""&&$13!="0"){print $4,$10,$13}}' > ${bname}_${aname}.overlap
 #
-${dec}/sameassemblyMatchscore -a ${aname}_geneLength.txt -b ${aname}_${bname}.overlap > ${aname}_${bname}.one2many
-${dec}/sameassemblyMatchscore -a ${bname}_geneLength.txt -b ${bname}_${aname}.overlap > ${bname}_${aname}.one2many
+${dec}/sameassemblyMatchscore -a ${aname}.genelength -b ${aname}_${bname}.overlap > ${aname}_${bname}.one2many
+${dec}/sameassemblyMatchscore -a ${bname}.genelength -b ${bname}_${aname}.overlap > ${bname}_${aname}.one2many
 #
 ${dec}/RBH -a ${aname}_${bname}.overlap -b ${bname}_${aname}.overlap | cut -f1,2 | sort | uniq > ${aname}_${bname}.RBH
 #

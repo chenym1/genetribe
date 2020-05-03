@@ -1,15 +1,29 @@
 #!/usr/bin/env python3
+
+'''
+    genetribe - coreSplitbyChromosomeGroup.py
+    Copyright (C) Yongming Chen
+    Contact: chen_yongming@126.com
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+DEALINGS IN THE SOFTWARE.
+'''
+
 import re
-#
-#def getnum ( Chr , chromosome):
-#        index = Chr.find('N')
-#        chr_suffix = Chr[index+1:]
-#        length = len(chr_suffix)
-#        chr_match = re.search('[0-9]'+chr_suffix+'|[0-9][0-9]'+chr_suffix,chromosome).group()
-#        length = len(chr_match) - length
-#        num = chr_match[0:length]
-#        return num
-#
+
 def Filter (blastfile,beda,bedb,matchpair,totalchr):
 	# match pair
 	matchpair = matchpair.split(',')

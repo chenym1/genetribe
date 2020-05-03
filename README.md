@@ -42,7 +42,7 @@ genetribe -h
 #      sameassembly   The Homolog inference for same assembly
 
 # [  tools ]
-#      RBH            Obtain Reciprocal Best Hits (RBH)
+#      RBH            Obtain Reciprocal Best Hits(RBH)
 #      CBS            Calculate Collinearity Block Score(CBS)
 #      longestcds     Extract the longest protein sequence from protein fasta
 

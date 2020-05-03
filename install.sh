@@ -14,7 +14,7 @@ if [ `which bedtools | wc -l` == 0 ];then
 	stat=$((stat+1))
 fi
 
-python -m jcvi.compara 2>jcvi.s
+python3 -m jcvi.compara 2>jcvi.s
 if [ `cat jcvi.s | wc -l` == 1 ];then
 	echo 'ERROR: jcvi (MCscan) cannot be found'
 	stat=$((stat+1))

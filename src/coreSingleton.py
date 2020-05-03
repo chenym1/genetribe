@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 '''
-    genetribe - sameassemblyBestHit.py
+    genetribe - coreSingleton.py
     Copyright (C) Yongming Chen
     Contact: chen_yongming@126.com
 
@@ -22,44 +22,34 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 '''
 
-from math import log
-#
-def cal(datafile,RBHfile):
-	data = open(datafile)
-	BBH = open(RBHfile)
-	BBHdc = {}
-	for i in BBH:
-		i = i.strip().split('\t')
-		if i[0] not in BBHdc:
-			BBHdc[i[0]] = ''
-		if i[1] not in BBHdc:
-			BBHdc[i[1]] = ''
+def gene2list(one2onefile):
 	dc = {}
-	for i in data:
-		i = i.strip().split('\t')
-		value = float(i[2])
-		if i[0] not in BBHdc:
-			if not i[0] in dc:
-				dc[i[0]] = {value:i[1]}
-			else:
-				dc[i[0]][value] = i[1]
-	##
-	for i,j in dc.items():
-		MAX = max(j.keys())
-		gene = j[MAX]
-		print (str(i)+'\t'+str(gene))
+	with open(one2onefile) as FILE:
+		for i in FILE:
+			i = i.strip().split('\t')
+			dc[i[0]] = ''
+		#
 	#
-#
+	return dc
+
+def singleton(bedfile,one2onefile):
+	genedc = gene2list(one2onefile)
+	with open(bedfile) as FILE:
+		for i in FILE:
+			i = i.strip().split('\t')
+			if i[3] not in genedc:
+				print (i[3])
+
 from optparse import OptionParser
 def main():
-	usage = "Usage: %prog -a scorefile -b RBHfile > output"
+	usage = "Usage: %prog -a bedfile -b one2onefile > singleton"	
 	parser = OptionParser(usage)
-	parser.add_option("-a", dest="scorefile",
-		help="score file", metavar="FILE")
-	parser.add_option("-b", dest="RBHfile",
-		help="RBH file", metavar="FILE")
+	parser.add_option("-a", dest="bedfile",
+		help="bed", metavar="FILE")
+	parser.add_option("-b", dest="one2onefile",
+		help="one2one", metavar="FILE")
 	(options, args) = parser.parse_args()
-	cal(options.scorefile,options.RBHfile)
-#
+	singleton(options.bedfile,options.one2onefile)
+
 if __name__ == "__main__":
 	main()
