@@ -12,9 +12,9 @@ Guo, Weilong | guoweilong@126.com
 ## Dependencies
 
 The GeneTribe is implemented in `python3`, and three external command-line tools, which are executable on your `PATH`,  are needed:
-- [blast](https://blast.ncbi.nlm.nih.gov/Blast.cgi?) ---- `conda install blast -c bioconda`
-- [MCscan](https://github.com/tanghaibao/jcvi/) ---- `pip install jcvi`
-- [bedtools](https://bedtools.readthedocs.io/en/latest/) ---- `conda install bedtools -c bioconda`
+- [blast](https://blast.ncbi.nlm.nih.gov/Blast.cgi?)     `conda install blast -c bioconda`
+- [MCscan](https://github.com/tanghaibao/jcvi/)    `pip install jcvi`
+- [bedtools](https://bedtools.readthedocs.io/en/latest/)  `conda install bedtools -c bioconda`
 
 ## Installation
 
