@@ -20,6 +20,10 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
+gettime() {
+        echo -e `date '+%Y-%m-%d %H:%M:%S ... '`
+}
+
 set -e
 
 if [ -z "$1" ]; then
@@ -29,7 +33,7 @@ fi
 #
 Usage () {
         echo "Usage:"
-	echo "  genetribe sameassembly -l <firstname> -f <secondname> -d <dir>"
+	echo "  genetribe sameassembly -l <firstname> -f <secondname>"
         echo "Description:"
         echo "  Homolog inference for same assembly"
         echo "Author:Chen,Yongming;2019-3-20
@@ -60,7 +64,7 @@ do
         esac
 done
 
-
+echo `gettime`"prepared the required original files..."
 not_file=""
 if [ ! -f "${aname}.bed" ];then
 	not_file=${not_file}" ${aname}.bed"
@@ -80,12 +84,11 @@ if [ "$not_file" != "" ];then
 	exit 1
 fi
 #
+dec=`echo $(dirname $(readlink -f "$0")) | sed 's/src/bin/g'`
 rm -rf ./output
 mkdir ./output
 cd ./output
 #
-dec=`echo $(dirname $(readlink -f "$0")) | sed 's/src/bin/g'`
-
 
 ln -s ../${aname}.bed ./
 ln -s ../${bname}.bed ./
@@ -93,13 +96,18 @@ ln -s ../${aname}.genelength ./
 ln -s ../${bname}.genelength ./
 #
 
+echo `gettime`"Obtain the overlapping length between genes..."
 bedtools intersect -a ${aname}.bed -b ${bname}.bed -sorted -wao | \
                 gawk -v OFS='\t' '{if($13!=""&&$13!="0"){print $4,$10,$13}}' > ${aname}_${bname}.overlap
 bedtools intersect -a ${bname}.bed -b ${aname}.bed -sorted -wao | \
                 gawk -v OFS='\t' '{if($13!=""&&$13!="0"){print $4,$10,$13}}' > ${bname}_${aname}.overlap
 #
+
+echo `gettime`"calculate match score..."
 ${dec}/sameassemblyMatchscore -a ${aname}.genelength -b ${aname}_${bname}.overlap > ${aname}_${bname}.one2many
 ${dec}/sameassemblyMatchscore -a ${bname}.genelength -b ${bname}_${aname}.overlap > ${bname}_${aname}.one2many
+
+echo `gettime`"Obtain RBH and SBH gene pair..."
 #
 ${dec}/RBH -a ${aname}_${bname}.overlap -b ${bname}_${aname}.overlap | cut -f1,2 | sort | uniq > ${aname}_${bname}.RBH
 #
@@ -114,3 +122,4 @@ cat ${bname}_${aname}.single_end | gawk -vOFS='\t' '{print $1,$2,"SBH"}' >>${bna
 mv ${aname}_${bname}.one2one ${bname}_${aname}.one2one ${aname}_${bname}.one2many ${bname}_${aname}.one2many ../
 cd ..
 rm -rf ./output
+echo `gettime`"Done!"

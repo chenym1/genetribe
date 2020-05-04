@@ -305,5 +305,5 @@ cat ${aname}_${bname}.one2one | gawk -vOFS="\t" '{if($3=="SBH")print}' > ${aname
 cat ${bname}_${aname}.one2one | gawk -vOFS="\t" '{if($3=="SBH")print}' > ${bname}_${aname}.SBH
 
 rm -rf output
-echo `gettime`"done!"
+echo `gettime`"Done!"
 
