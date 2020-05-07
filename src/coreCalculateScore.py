@@ -58,7 +58,8 @@ def bitscore2dc (own_file):
 	with open(own_file) as own:
 		for i in own:
 			i = i.strip().split('\t')
-			dc[i[0]] = i[11]
+			if i[0] == i[1]:
+				dc[i[0]] = i[11]
 	return dc
 #
 def Filter ( blastfile,matchpair,beda,bedb,owna,ownb,typea,typeb,stat_chromosome,stat_confidence,out_chr_info ) :

@@ -57,4 +57,4 @@ def main():
 	weight(options.inputfile,options.colinearity_percent,options.filterscore)
 #
 if __name__ == "__main__":
-        main()
+	main()
