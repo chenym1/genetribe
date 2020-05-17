@@ -52,7 +52,7 @@ Usage:"
 	echo "  -c         Calculate confidence score [default False]"
 	echo "  -s <str>   The separator between gene name and number in the header of fasta [default .]"
 	echo "  -e         E-value of BLASTP [default 1e-5]"
-	echo "  -n <int>   Number of threads [default 1]"
+	echo "  -n <int>   Number of threads for blast [default 36]"
 	echo "  -b <float> Threshold based on BSR for filtering Match Score(0-100) [default 75]"
         exit 1
 }
@@ -106,7 +106,7 @@ ${dec}/coredetectFileExist \
 	-a ${aname} \
 	-b ${bname} \
 	-e ${evalue-1e-5} \
-	-n ${num_threads-1} \
+	-n ${num_threads-36} \
 	-f ${fa_str-.} \
 
 ${dec}/corelns \

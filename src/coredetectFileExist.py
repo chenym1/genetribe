@@ -176,7 +176,7 @@ def blast(dicr2,name1,name2,evalue,num_threads,fa_str="."):
 		#
 	#
 #
-def detect_total(dicr,name1,name2,evalue = 1e-5,num_threads = 1,fa_str = ".",confidence_stat = False):
+def detect_total(dicr,name1,name2,evalue = 1e-5,num_threads = 36,fa_str = ".",confidence_stat = False):
 	detect_bed_file(name1,name2,confidence_stat)
 	blast(dicr,name1,name2,evalue,num_threads,fa_str)
 
@@ -196,7 +196,7 @@ def main():
 	parser.add_option("-e", dest="evalue",metavar="",
 		help="E-value for BLASTP [Default: %default]",default=1e-5)
 	parser.add_option("-n", dest="num_threads",metavar="INT",
-		help="Num threads for BLASTP [Default: %default]",default=1)
+		help="Num threads for BLASTP [Default: %default]",default=36)
 	parser.add_option("-f", dest="fa_str",metavar="STRING",
 		help="The separator between gene name and number in the header of fasta [Default: %default]",default=".")
 	parser.add_option("-c", dest="confidence_stat",action="store_true",
