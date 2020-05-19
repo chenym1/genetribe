@@ -94,11 +94,16 @@ def detect_fasta_file(name1,name2):
 	dicr = './'
 	fa1 = dicr+name1+'.fa'
 	fa2 = dicr+name2+'.fa'
+	long_fa1 = dicr+name1+'_long.fa'
+	long_fa2 = dicr+name2+'_long.fa'
 	file_list = [fa1,fa2]
+	file_list2 = [long_fa1,long_fa2]
 	not_exist_list = []
 	for num in range(2):
 		if not os.path.exists(file_list[num]):
-			not_exist_list.append(file_list[num])
+			if not os.path.exists(file_list2[num]):
+				not_exist_list.append(file_list[num])
+			#
 		#
 	#
 	return not_exist_list
@@ -135,14 +140,24 @@ def blast(dicr2,name1,name2,evalue,num_threads,fa_str="."):
 				#
 				fa1 = './'+name1+'.fa'
 				fa2 = './'+name2+'.fa'
+				raw_long_fa1 = './'+name1+'_long.fa'
+				raw_long_fa2 = './'+name2+'_long.fa'
 				long_fa1 = tmp_out+name1+'_long.fa'
 				long_fa2 = tmp_out+name2+'_long.fa'
 				db1 = tmp_out+name1+'_db/'+name1
 				db2 = tmp_out+name2+'_db/'+name2
 				#
-				sh(DIR+'/longestfasta -i '+fa1+' -s '+fa_str+' > '+long_fa1)
+				if not os.path.exists(raw_long_fa1):
+					sh(DIR+'/longestfasta -i '+fa1+' -s '+fa_str+' > '+long_fa1)
+				else:
+					sh('cp '+raw_long_fa1+' '+long_fa1)
+
+				if not os.path.exists(raw_long_fa2):
+					sh(DIR+'/longestfasta -i '+fa2+' -s '+fa_str+' > '+long_fa2)
+				else:
+					sh('cp '+raw_long_fa2+' '+long_fa2)
+				#
 				sh('makeblastdb -in '+long_fa1+' -parse_seqids -hash_index -dbtype prot -out '+db1)
-				sh(DIR+'/longestfasta -i '+fa2+' -s '+fa_str+' > '+long_fa2)
 				sh('makeblastdb -in '+long_fa2+' -parse_seqids -hash_index -dbtype prot -out '+db2)
 				#
 				blast_task = []
