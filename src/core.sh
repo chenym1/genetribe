@@ -140,9 +140,7 @@ for key in ${aname}_${bname} ${bname}_${aname};do
 		-o ${key}.chrinfo > ${key}.score1
 
 	echo ""
-	echo ""
 	python -m jcvi.compara.catalog ortholog ${key1} ${key2}
-	echo ""
 	echo ""
 
 	${dec}/coreCBS -i ${key1}.${key2}.lifted.anchors -a ${key1}.bed -b ${key2}.bed -o ${key}
@@ -306,4 +304,3 @@ cat ${bname}_${aname}.one2one | gawk -vOFS="\t" '{if($3=="SBH")print}' > ${bname
 
 rm -rf output
 echo `gettime`"Done!"
-
