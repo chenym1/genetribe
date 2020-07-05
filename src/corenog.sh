@@ -94,7 +94,7 @@ done
 #
 dec=`echo $(dirname $(readlink -f "$0")) | sed 's/src/bin/g'`
 #==
-echo `gettime`"prepared the required original files..."
+echo `gettime`"prepare original files..."
 
 ${dec}/corenog-detectFileExist \
 	-d ${directory-./} \
@@ -114,7 +114,7 @@ if [ "$aname"x = "$bname"x ];then
 	bname=${aname}itself
 fi
 #===
-echo `gettime`"calculating BSR, CBS and Penalty..."
+echo `gettime`"calculate BSR, CBS and Penalty..."
 
 for key in ${aname}_${bname} ${bname}_${aname};do
 
@@ -147,7 +147,7 @@ ${dec}/coreScore2one -a ${aname}_${bname}.score2 -b ${bname}_${aname}.score2 > $
 cat ${aname}_${bname}.score | gawk -vOFS='\t' '{print $2,$1,$3,$4,$5}' > ${bname}_${aname}.score
 
 #===
-echo `gettime`"evaluating the optimal alpha for weighted collinearity score..."
+echo `gettime`"evaluate optimal α for weighting score..."
 
 for value in 0 5 10 15 20 25 30 35 40 45 50 55 60 65 70 75 80 85 90 95 99;do
 
@@ -169,8 +169,8 @@ done
 
 max_percent=`sort -k2nr ${aname}_${bname}_chr11xchr22.stat | sed -n '1p' | cut -f1`
 
-echo `gettime`"aerfa = "${max_percent}"..."
-echo `gettime`"weighted the original score..."
+echo `gettime`"α = "${max_percent}"..."
+echo `gettime`"merge original score..."
 
 #===
 ${dec}/coreSetWeight -i ${aname}_${bname}.score \
@@ -185,7 +185,7 @@ ${dec}/coreSetWeight -i ${bname}_${aname}.score \
 
 
 #===
-echo `gettime`"processed each pair of chromosomes..."
+echo `gettime`"process all chromosome pairs..."
 
 ${dec}/RBH -a ${aname}_${bname}.weighted_score -b ${bname}_${aname}.weighted_score \
 	> ${aname}_${bname}.BMP
@@ -203,7 +203,7 @@ ${dec}/coreSingleSideBest -a ${bname}_${aname}.weighted_score \
 	> ${bname}_${aname}.single_end
 
 #===
-echo `gettime`"merged the results..."
+echo `gettime`"merged results..."
 
 for key in ${aname}_${bname} ${bname}_${aname};do
 
@@ -234,4 +234,4 @@ cat ${aname}_${bname}.one2one | gawk -vOFS="\t" '{if($3=="SBH")print}' > ${aname
 cat ${bname}_${aname}.one2one | gawk -vOFS="\t" '{if($3=="SBH")print}' > ${bname}_${aname}.SBH
 
 rm -rf output
-echo `gettime`"Done!"
+echo `gettime`"done!"

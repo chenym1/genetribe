@@ -64,7 +64,7 @@ do
         esac
 done
 
-echo `gettime`"prepared the required original files..."
+echo `gettime`"prepare original files..."
 not_file=""
 if [ ! -f "${aname}.bed" ];then
 	not_file=${not_file}" ${aname}.bed"
@@ -96,7 +96,7 @@ ln -s ../${aname}.genelength ./
 ln -s ../${bname}.genelength ./
 #
 
-echo `gettime`"Obtain the overlapping length between genes..."
+echo `gettime`"obtain overlap between genes..."
 bedtools intersect -a ${aname}.bed -b ${bname}.bed -sorted -wao | \
                 gawk -v OFS='\t' '{if($13!=""&&$13!="0"){print $4,$10,$13}}' > ${aname}_${bname}.overlap
 bedtools intersect -a ${bname}.bed -b ${aname}.bed -sorted -wao | \
@@ -107,7 +107,7 @@ echo `gettime`"calculate match score..."
 ${dec}/sameassemblyMatchscore -a ${aname}.genelength -b ${aname}_${bname}.overlap > ${aname}_${bname}.one2many
 ${dec}/sameassemblyMatchscore -a ${bname}.genelength -b ${bname}_${aname}.overlap > ${bname}_${aname}.one2many
 
-echo `gettime`"Obtain RBH and SBH gene pair..."
+echo `gettime`"generate RBH and SBH tables..."
 #
 ${dec}/RBH -a ${aname}_${bname}.overlap -b ${bname}_${aname}.overlap | cut -f1,2 | sort | uniq > ${aname}_${bname}.RBH
 #
@@ -122,4 +122,4 @@ cat ${bname}_${aname}.single_end | gawk -vOFS='\t' '{print $1,$2,"SBH"}' >>${bna
 mv ${aname}_${bname}.one2one ${bname}_${aname}.one2one ${aname}_${bname}.one2many ${bname}_${aname}.one2many ../
 cd ..
 rm -rf ./output
-echo `gettime`"Done!"
+echo `gettime`"done!"

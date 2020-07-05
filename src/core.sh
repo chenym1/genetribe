@@ -99,7 +99,7 @@ done
 #
 dec=`echo $(dirname $(readlink -f "$0")) | sed 's/src/bin/g'`
 #==
-echo `gettime`"prepared the required original files..."
+echo `gettime`"prepare original files..."
 
 ${dec}/coredetectFileExist \
 	-d ${directory-./} \
@@ -119,7 +119,7 @@ if [ "$aname"x = "$bname"x ];then
 	bname=${aname}itself
 fi
 #===
-echo `gettime`"calculating BSR, CBS and Penalty..."
+echo `gettime`"calculate BSR, CBS and Penalty..."
 
 for key in ${aname}_${bname} ${bname}_${aname};do
 
@@ -155,7 +155,7 @@ ${dec}/coreScore2one -a ${aname}_${bname}.score2 -b ${bname}_${aname}.score2 > $
 cat ${aname}_${bname}.score | gawk -vOFS='\t' '{print $2,$1,$3,$4,$5}' > ${bname}_${aname}.score
 
 #===
-echo `gettime`"evaluating the optimal alpha for weighted collinearity score..."
+echo `gettime`"evaluate optimal α for weighting score..."
 
 chr11=`sed -n '1p' ${aname}_${bname}.matchlist | gawk -vFS=',' '{print $1}'`
 chr22=`sed -n '2p' ${aname}_${bname}.matchlist | gawk -vFS=',' '{print $1}'`
@@ -193,8 +193,8 @@ done
 
 max_percent=`sort -k2nr ${aname}_${bname}_chr11xchr22.stat | sed -n '1p' | cut -f1`
 
-echo `gettime`"aerfa = "${max_percent}"..."
-echo `gettime`"weighted the original score..."
+echo `gettime`"α = "${max_percent}"..."
+echo `gettime`"merge original score..."
 
 #===
 ${dec}/coreSetWeight -i ${aname}_${bname}.score \
@@ -209,7 +209,7 @@ ${dec}/coreSetWeight -i ${bname}_${aname}.score \
 
 
 #===
-echo `gettime`"processed each pair of chromosomes..."
+echo `gettime`"process all chromosome pairs..."
 Numberofrounds=1
 
 for firstchr in `sed -n '1p' ${aname}_${bname}.matchlist | sed 's/,/ /g'`;do
@@ -265,7 +265,7 @@ done
 done
 
 #===
-echo `gettime`"merged the results..."
+echo `gettime`"merge results..."
 
 for key in ${aname}_${bname} ${bname}_${aname};do
 
@@ -303,4 +303,4 @@ cat ${aname}_${bname}.one2one | gawk -vOFS="\t" '{if($3=="SBH")print}' > ${aname
 cat ${bname}_${aname}.one2one | gawk -vOFS="\t" '{if($3=="SBH")print}' > ${bname}_${aname}.SBH
 
 rm -rf output
-echo `gettime`"Done!"
+echo `gettime`"done!"
