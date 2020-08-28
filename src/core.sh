@@ -40,7 +40,7 @@ Usage:"
 	echo "genetribe core -l <FirstName> -f <SecondName> [options]
 	"
         echo "Description:"
-        echo "  The core workflow of genetribe"
+        echo "  Core workflow of GeneTribe"
         echo "  Author:Chen,Yongming; 2020-5-2; chen_yongming@126.com
 	"
         echo "Options:"

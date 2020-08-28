@@ -64,7 +64,7 @@ from optparse import OptionParser
 # ===========================================
 def main():
     usage = "Usage: %prog -i pep.fa -s strsplit\n" \
-            "Description: Extract the longest protein sequence from protein fasta"
+            "Description: Extract longest protein sequence from protein fasta"
     parser = OptionParser(usage)
     parser.add_option("-i", dest="infile",
                   help="Input file", metavar="FILE")

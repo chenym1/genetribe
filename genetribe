@@ -47,7 +47,7 @@ if (argv_len) == 1  or sys.argv[1] in ["-h", "-H", "--help"]:
 	print ("     corenog        Workflow not grouping chromosomes")
 	print ("     sameassembly   Homolog inference for the same assembly")
 	print ("")
-	print ("[ tools ]")
+	print ("[ tool ]")
 	print ("     RBH            Obtain Reciprocal Best Hits (RBH)")
 	print ("     CBS            Calculate Collinearity Block Score (CBS)")
 	print ("     longestcds     Extract longest protein sequence from protein fasta")

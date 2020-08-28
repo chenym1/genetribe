@@ -35,7 +35,7 @@ Usage () {
         echo "Usage:"
 	echo "  genetribe sameassembly -l <firstname> -f <secondname>"
         echo "Description:"
-        echo "  Homolog inference for same assembly"
+        echo "  Homolog inference for the same assembly"
         echo "Author:Chen,Yongming;2019-3-20
 "
         echo "Options:"

@@ -39,7 +39,7 @@ Usage:"
 	echo "genetribe corenog -l <FirstName> -f <SecondName> [options]
 	"
         echo "Description:"
-        echo "  The workflow of not grouping chromosomes (corenog)"
+        echo "  Workflow not grouping chromosomes (corenog)"
         echo "  Author:Chen,Yongming; 2020-7-2; chen_yongming@126.com
 	"
         echo "Options:"

@@ -119,7 +119,7 @@ def final(block_dc,pair_dc,bed1tmp,bed2tmp,outname):
 from optparse import OptionParser
 def main():
 	usage = "Usage: %prog -i input.anchors -a bed1 -b bed2 > outputfile\n" \
-            "Description: Calculate Collinearity Block Score (CBS) from the result of MCscan"
+            "Description: Calculate Collinearity Block Score (CBS)"
 	parser = OptionParser(usage)
 	parser.add_option("-i", dest="block_file",
                   help="The block anchors file obtaining from MCScan", metavar="FILE")
