@@ -99,7 +99,7 @@ done
 #
 dec=`echo $(dirname $(readlink -f "$0")) | sed 's/src/bin/g'`
 #==
-echo `gettime`"prepare original files..."
+echo `gettime`"prepare raw files..."
 
 ${dec}/coredetectFileExist \
 	-d ${directory-./} \
@@ -194,7 +194,7 @@ done
 max_percent=`sort -k2nr ${aname}_${bname}_chr11xchr22.stat | sed -n '1p' | cut -f1`
 
 echo `gettime`"α = "${max_percent}"..."
-echo `gettime`"merge original score..."
+echo `gettime`"merge raw score..."
 
 #===
 ${dec}/coreSetWeight -i ${aname}_${bname}.score \

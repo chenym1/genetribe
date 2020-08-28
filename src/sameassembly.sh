@@ -64,7 +64,7 @@ do
         esac
 done
 
-echo `gettime`"prepare original files..."
+echo `gettime`"prepare raw files..."
 not_file=""
 if [ ! -f "${aname}.bed" ];then
 	not_file=${not_file}" ${aname}.bed"
@@ -103,7 +103,7 @@ bedtools intersect -a ${bname}.bed -b ${aname}.bed -sorted -wao | \
                 gawk -v OFS='\t' '{if($13!=""&&$13!="0"){print $4,$10,$13}}' > ${bname}_${aname}.overlap
 #
 
-echo `gettime`"calculate match score..."
+echo `gettime`"calculate score..."
 ${dec}/sameassemblyMatchscore -a ${aname}.genelength -b ${aname}_${bname}.overlap > ${aname}_${bname}.one2many
 ${dec}/sameassemblyMatchscore -a ${bname}.genelength -b ${bname}_${aname}.overlap > ${bname}_${aname}.one2many
 
