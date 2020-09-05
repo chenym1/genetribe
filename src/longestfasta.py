@@ -40,7 +40,7 @@ def longestfasta( infile,strsp):
 		if 'gene:' in i:
 			for num in range(len(info)):
 				tmp_str = info[num]
-				if tmp_str.startswith('gene:'):
+				if tmp_str.startswith('gene'):
 					gene = '>'+tmp_str.split('gene:')[1]
 		else:
 			gene = info[0].split(strsp)
