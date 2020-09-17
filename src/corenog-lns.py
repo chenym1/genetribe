@@ -70,9 +70,7 @@ def lns(name1,name2,confidence_stat):
 from optparse import OptionParser
 def main():
 	usage = "Usage: %prog [options]\n" \
-		"Description: link file (nog).\n"\
-		"Contact:     Chen, Yongming; chen_yongming@126.com;\n"\
-		"Last Update: 2020-07-02"
+		"Description: prepare files (nog)\n"
 	parser = OptionParser(usage)
 	parser.add_option("-a", dest="name1",
 		help="First name", metavar="STRING")

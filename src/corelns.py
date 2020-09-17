@@ -25,6 +25,7 @@ DEALINGS IN THE SOFTWARE.
 import os
 import subprocess
 import sys
+
 def sh(cmd_String):
 	return subprocess.getstatusoutput(cmd_String)
 
@@ -77,16 +78,14 @@ def lns(name1,name2,confidence_stat):
 from optparse import OptionParser
 def main():
 	usage = "Usage: %prog [options]\n" \
-		"Description: link file.\n"\
-		"Contact:     Chen, Yongming; chen_yongming@126.com;\n"\
-		"Last Update: 2020-05-02"
+		"Description: prepare files"
 	parser = OptionParser(usage)
 	parser.add_option("-a", dest="name1",
-		help="First name", metavar="STRING")
+		help="first name", metavar="STRING")
 	parser.add_option("-b", dest="name2",
-		help="Second name", metavar="STRING")
+		help="second name", metavar="STRING")
 	parser.add_option("-c", dest="confidence_stat",action="store_true",
-		help="Confidence file detect [Default: %default]",default=False)
+		help="detect confidence file [Default: %default]",default=False)
 	(options, args) = parser.parse_args()
 	lns(options.name1,options.name2,options.confidence_stat)
 #================

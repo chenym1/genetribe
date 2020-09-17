@@ -53,13 +53,13 @@ def find_single (score,RBH):
 	#
 from optparse import OptionParser
 def main():
-	usage = "Usage: %prog -a score -b RBH\n" \
-        "Description: find single-best of genes that not have RBH"
+	usage = "Usage: %prog [options]\n" \
+	"Description: find single-side best hits (SBH)"
 	parser = OptionParser(usage)
 	parser.add_option("-a", dest="score",
-                  help="the weighted-score file", metavar="FILE")
+		help="weight score", metavar="FILE")
 	parser.add_option("-b", dest="RBH",
-                  help="the RBH file", metavar="FILE")
+		help="RBH", metavar="FILE")
 	(options, args) = parser.parse_args()
 	find_single(options.score,options.RBH)
 #

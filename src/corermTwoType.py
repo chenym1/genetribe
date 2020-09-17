@@ -40,11 +40,11 @@ def final(data):
 
 from optparse import OptionParser
 def main():
-	usage = "Usage: %prog -i inputfile\n" \
-        	"Description: remove gene pair that have mutual-best and its-best"
+	usage = "Usage: %prog [options]\n" \
+        	"Description: remove gene pairs that have both RBH and SBH"
 	parser = OptionParser(usage)
 	parser.add_option("-i", dest="inputfile",
-                  help="Input file", metavar="FILE")
+                  help="input file", metavar="FILE")
 	(options, args) = parser.parse_args()
 	final(options.inputfile)
 #

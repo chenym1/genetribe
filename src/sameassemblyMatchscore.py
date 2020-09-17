@@ -43,12 +43,12 @@ def score(lengthfile,input1):
 #
 from optparse import OptionParser
 def main():
-	usage = "Usage: %prog -a genelengthfile -b inputfile > output"
+	usage = "Usage: %prog [options]"
 	parser = OptionParser(usage)
 	parser.add_option("-a", dest="lengthfile",
-		help="gene length file", metavar="FILE")
+		help="gene length", metavar="FILE")
 	parser.add_option("-b", dest="input1",
-		help="overlap file", metavar="FILE")
+		help="overlap", metavar="FILE")
 	(options, args) = parser.parse_args()
 	score(options.lengthfile,options.input1)
 #

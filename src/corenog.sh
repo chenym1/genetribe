@@ -34,25 +34,27 @@ gettime() {
 stat_confidence=""
 
 Usage () {
-        echo "
-Usage:"
-	echo "genetribe corenog -l <FirstName> -f <SecondName> [options]
-	"
+	echo ""
+	echo "Tool:   GeneTribe corenog"
+        echo "Usage:  genetribe corenog -l <FirstName> -f <SecondName> [options]"
+	echo ""
         echo "Description:"
-        echo "  Workflow not grouping chromosomes (corenog)"
-        echo "  Author:Chen,Yongming; 2020-7-2; chen_yongming@126.com
-	"
-        echo "Options:"
+        echo "  Workflow not grouping chromosomes"
+        echo ""
+	echo "Options:"
         echo "  -h         Show this message and exit"
         echo "  -l <str>   Prefix name of first file"
         echo "  -f <str>   Prefix name of second file"
 	echo "  -d <dir>   Pre-computed BLAST file in <dir> [default ./]"
 	echo "  -c         Calculate confidence score [default False]"
-	echo "  -s <str>   The separator between gene name and number in the header of fasta [default .]"
+	echo "  -s <str>   The string for spliting gene from transcript ID [default .]"
 	echo "  -e         E-value of BLASTP [default 1e-5]"
 	echo "  -n <int>   Number of threads for blast [default 36]"
 	echo "  -b <float> Threshold based on BSR for filtering Match Score(0-100) [default 75]"
-        exit 1
+	echo ""
+	echo "Author: Chen,Yongming; chen_yongming@126.com"
+	echo ""
+	exit 1
 }
 while getopts "hl:f:d:cs:e:n:b:" opt
 do
@@ -91,9 +93,21 @@ do
                 ;;
         esac
 done
-#
+
 dec=`echo $(dirname $(readlink -f "$0")) | sed 's/src/bin/g'`
-#==
+
+logo () {
+        echo ""
+        echo "   ==============================="
+        echo "  ||                             ||"
+        echo "  ||         GeneTribe           ||"
+        echo "  ||       Version: v1.0.0       ||"
+        echo "  ||                             ||"
+        echo "   ==============================="
+        echo ""
+}
+logo
+ 
 echo `gettime`"prepare original files..."
 
 ${dec}/corenog-detectFileExist \

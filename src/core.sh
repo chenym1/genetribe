@@ -35,14 +35,13 @@ dont_stat_chromosome_group=""
 stat_confidence=""
 
 Usage () {
-        echo "
-Usage:"
-	echo "genetribe core -l <FirstName> -f <SecondName> [options]
-	"
+	echo ""
+	echo "Tool:  GeneTribe core"
+        echo "Usage: genetribe core -l <FirstName> -f <SecondName> [options]"
+	echo ""
         echo "Description:"
         echo "  Core workflow of GeneTribe"
-        echo "  Author:Chen,Yongming; 2020-5-2; chen_yongming@126.com
-	"
+	echo ""
         echo "Options:"
         echo "  -h         Show this message and exit"
         echo "  -l <str>   Prefix name of first file"
@@ -50,11 +49,14 @@ Usage:"
 	echo "  -d <dir>   Pre-computed BLAST file in <dir> [default ./]"
 	echo "  -r         Calculate chromosome group score [default True]"
 	echo "  -c         Calculate confidence score [default False]"
-	echo "  -s <str>   The separator between gene name and number in the header of fasta [default .]"
+	echo "  -s <str>   The string for spliting gene from transcript ID [default .]"
 	echo "  -e         E-value of BLASTP [default 1e-5]"
 	echo "  -n <int>   Number of threads for blast [default 36]"
 	echo "  -b <float> Threshold based on BSR for filtering Match Score(0-100) [default 75]"
-        exit 1
+	echo ""
+	echo "Author: Chen,Yongming; chen_yongming@126.com"
+	echo ""
+	exit 1
 }
 while getopts "hl:f:d:rcs:e:n:b:" opt
 do
@@ -98,7 +100,19 @@ do
 done
 #
 dec=`echo $(dirname $(readlink -f "$0")) | sed 's/src/bin/g'`
-#==
+
+logo () {
+	echo ""
+	echo "   ==============================="
+	echo "  ||                             ||"
+	echo "  ||         GeneTribe           ||"
+	echo "  ||       Version: v1.0.0       ||"
+	echo "  ||                             ||"
+	echo "   ==============================="
+	echo ""
+}
+logo
+
 echo `gettime`"prepare raw files..."
 
 ${dec}/coredetectFileExist \
@@ -296,6 +310,7 @@ mv ${aname}_${bname}.total ../${aname}_${bname}.one2one
 mv ${bname}_${aname}.total ../${bname}_${aname}.one2one
 mv ${aname}_${bname}.singleton ../
 mv ${bname}_${aname}.singleton ../
+mv ${aname}_${bname}.block_pos ${bname}_${aname}.block_pos ../
 cd ..
 
 cat ${aname}_${bname}.one2one | gawk -vOFS="\t" '{if($3=="RBH")print}' > ${aname}_${bname}.RBH

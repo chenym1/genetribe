@@ -25,25 +25,27 @@ DEALINGS IN THE SOFTWARE.
 
 import sys
 import re
-#
+
+
 def correct ( rawfile , totalchr , score , bed) :
+
 	with open(totalchr) as TOTALCHR:
 		TOTALCHR1 = TOTALCHR.readline()
 		TOTALCHR1 = TOTALCHR1.strip().split('\t')
 		rawCHR = TOTALCHR1[0]
-	#
+	
 	beddc = {}
 	with open(bed) as bed2:
 		for i in bed2:
 			i = i.strip().split('\t')
 			beddc[i[3]] = i[0]
-		#
+	
 	score_dc = {}
 	with open(score) as score2:
 		for i in score2:
 			i = i.strip().split('\t')
 			score_dc[i[0]+'\t'+i[1]] = i[2]
-		#
+	
 	undc = {}
 	with open(rawfile) as inputfile:
 		for i in inputfile:
@@ -51,7 +53,6 @@ def correct ( rawfile , totalchr , score , bed) :
 			CHR = re.sub('[0-9][0-9]|[0-9]','N',beddc[i[0]])
 			if re.match(rawCHR,CHR):
 				print ('\t'.join(i))
-				 #continue
 			else:
 				if not i[0] in undc:
 					undc[i[0]] = {i[3]:[[i[1],i[2]]]}
@@ -60,7 +61,7 @@ def correct ( rawfile , totalchr , score , bed) :
 						undc[i[0]][i[3]] = [[i[1],i[2]]]
 					else:
 						undc[i[0]][i[3]].append([i[1],i[2]])
-	#
+	
 	for i in undc.keys():
 		pair_dc = undc[i]
 		for pair in pair_dc.keys():
@@ -79,24 +80,27 @@ def correct ( rawfile , totalchr , score , bed) :
 					gene = info[0]
 					group = info[1]
 			print (i+'\t'+gene+'\t'+group+'\t'+pair)
-#
+
+
 from optparse import OptionParser
 # ===========================================
+
 def main():
-	usage = "Usage: %prog -i rawfile -t totalchr -b bed\n" \
-            "Description: get best pair of Unknown chromosome gene"
+	usage = "Usage: %prog [options]\n" \
+            "Description: get best gene pair on unknown chromosome"
 	parser = OptionParser(usage)
 	parser.add_option("-i", dest="rawfile",
-                  help="Input total file", metavar="FILE")
+                  help="input total file", metavar="FILE")
 	parser.add_option("-t", dest="totalchr",
-                  help="total chromosome", metavar="FILE")
+                  help="name of all chromosome", metavar="FILE")
 	parser.add_option("-c", dest="score",
-                  help="score file", metavar="FILE")
+                  help="score", metavar="FILE")
 	parser.add_option("-b", dest="bed",
                   help="bed file", metavar="FILE")
 	(options, args) = parser.parse_args()
 
 	correct (options.rawfile,options.totalchr,options.score,options.bed)
+
 # ===========================================
 if __name__ == "__main__":
 	main()

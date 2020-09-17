@@ -64,12 +64,12 @@ from optparse import OptionParser
 # ===========================================
 def main():
     usage = "Usage: %prog -i pep.fa -s strsplit\n" \
-            "Description: Extract longest protein sequence from protein fasta"
+            "Description: extract longest protein sequence from protein fasta"
     parser = OptionParser(usage)
     parser.add_option("-i", dest="infile",
-                  help="Input file", metavar="FILE")
+                  help="input file", metavar="FILE")
     parser.add_option("-s", dest="strsplit",default='.',
-                  help="the string of split geneid from transcript ID", metavar="STR")
+                  help="the string for spliting gene from transcript ID", metavar="STR")
     (options, args) = parser.parse_args()
     longestfasta (options.infile,options.strsplit)
 

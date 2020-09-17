@@ -32,16 +32,20 @@ if [ -z "$1" ]; then
 fi
 #
 Usage () {
-        echo "Usage:"
-	echo "  genetribe sameassembly -l <firstname> -f <secondname>"
+	echo ""
+	echo "Tool:  GeneTribe sameassembly"
+        echo "Usage: genetribe sameassembly -l <firstname> -f <secondname> [options]"
+	echo ""
         echo "Description:"
-        echo "  Homolog inference for the same assembly"
-        echo "Author:Chen,Yongming;2019-3-20
-"
-        echo "Options:"
+        echo "  Homology inference for the same assembly"
+        echo ""
+	echo "Options:"
         echo "  -h Show this message and exit"
         echo "  -l <string> Prefix name of first assembly"
         echo "  -f <string> Prefix name of second assembly"
+	echo ""
+	echo "Author: Chen,Yongming; chen_yongming@126.com"
+	echo ""
         exit 1
 }
 while getopts "hl:f:" opt
@@ -63,6 +67,18 @@ do
                 ;;
         esac
 done
+
+logo () {
+        echo ""
+        echo "   ==============================="
+        echo "  ||                             ||"
+        echo "  ||         GeneTribe           ||"
+        echo "  ||       Version: v1.0.0       ||"
+        echo "  ||                             ||"
+        echo "   ==============================="
+        echo ""
+}
+logo
 
 echo `gettime`"prepare raw files..."
 not_file=""

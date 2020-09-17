@@ -79,13 +79,13 @@ def combine_unique(dc1,dc2):
 #
 from optparse import OptionParser
 def main():
-	usage = "Usage: %prog -a input1 -b input2 > output\n" \
-		"Description: combine and unique two file"
+	usage = "Usage: %prog [options]\n" \
+		"Description: combine and normalize bidirectional score"
 	parser = OptionParser(usage)
 	parser.add_option("-a", dest="input1",
-		help="Input file1", metavar="FILE")
+		help="input file 1", metavar="FILE")
 	parser.add_option("-b", dest="input2",
-		help="Input file2", metavar="FILE")
+		help="input file 2", metavar="FILE")
 	(options, args) = parser.parse_args()
 	dc1,dc2 = file2dc(options.input1,options.input2)
 	combine_unique(dc1,dc2)

@@ -53,24 +53,24 @@ def bitscore2dc (own_file):
 	return dc
 #
 def Filter ( blastfile,beda,bedb,owna,ownb,typea,typeb,stat_confidence) :
+
 	## type dict
 	if stat_confidence:
 		typeadc = confidence2dc(typea)
 		typebdc = confidence2dc(typeb)
+
 	## bitscore into dict
 	adc = bitscore2dc(owna)
 	bdc = bitscore2dc(ownb)
+
 	## get score
-	'''
-	filter similarity of pairs
-	'''
 	with open(blastfile) as blast:
 		for i in blast:
 			i = i.strip().split('\t')
 			geneA = i[0]
 			geneB = i[1]
 			if geneA != geneB:
-				#=======   BSR   ================
+				# BSR
 				bitscore = i[11]
 				try:
 					bitAB = float(bdc[geneB])
@@ -81,9 +81,9 @@ def Filter ( blastfile,beda,bedb,owna,ownb,typea,typeb,stat_confidence) :
 						bitOb = float(bitscore)/float(bitAB)
 					except KeyError:
 						continue
-				#
+
 				chromosome_group = 0
-				#======  confidance  =======
+				# confidance
 				if stat_confidence:
 					try:
 						type_1 = typeadc[geneA]
@@ -98,34 +98,32 @@ def Filter ( blastfile,beda,bedb,owna,ownb,typea,typeb,stat_confidence) :
 						confidence = 1
 				else:
 					confidence = 0
-				##
+				
 				bitOb = '%.3f' % bitOb
 				gene_score = chromosome_group+confidence
 				print (geneA+'\t'+geneB+'\t'+str(bitOb)+'\t'+str(gene_score))
 
-####
 from optparse import OptionParser
 def main():
-	usage = "Usage: %prog -i \n" \
-		"Author: Chen,Yongming; chen_ym@cau.edu.cn; 2020-7-2\n" \
-		"Description: Get BSR and chromosome-group score of every hits (nog)."
+	usage = "Usage: %prog [options]\n" \
+		"Description: get BSR and chromosome group score of all hits (nog)"
 	parser = OptionParser(usage)
 	parser.add_option("-i", dest="blastfile",
-                  help="A blast B file", metavar="FILE")
+                  help="blast file of A to B", metavar="FILE")
 	parser.add_option("-a", dest="beda",
-                  help="bed of A genome", metavar="FILE")
+                  help="bed A", metavar="FILE")
 	parser.add_option("-b", dest="bedb",
-                  help="bed of B genome", metavar="FILE")
+                  help="bed B", metavar="FILE")
 	parser.add_option("--oa", dest="owna",
-                  help="self-blast of A genome", metavar="FILE")
+                  help="self-blast of A", metavar="FILE")
 	parser.add_option("--ob", dest="ownb",
-                  help="self-blast of B genome", metavar="FILE")
+                  help="self-blast of B", metavar="FILE")
 	parser.add_option("--ta", dest="typea",
-                  help="confidence type of A genome", metavar="FILE")
+                  help="gene annotation confidence of A", metavar="FILE")
 	parser.add_option("--tb", dest="typeb",
-                  help="confidence type of B genome", metavar="FILE")
+                  help="gene annotation confidence of B", metavar="FILE")
 	parser.add_option("-c", action="store_true",  dest = "stat_confidence",
-	        help="Whether to count confidence score [default: %default]",default = False, metavar="boolean")
+	        help="count gene annotation confidence score [default: %default]",default = False, metavar="boolean")
 	
 	(options, args) = parser.parse_args()
 	Filter(options.blastfile,options.beda,options.bedb,options.owna,options.ownb,options.typea,options.typeb,options.stat_confidence)

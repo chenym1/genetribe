@@ -63,17 +63,21 @@ def bitscore2dc (own_file):
 	return dc
 #
 def Filter ( blastfile,matchpair,beda,bedb,owna,ownb,typea,typeb,stat_chromosome,stat_confidence,out_chr_info ) :
+
 	## type dict
 	if stat_confidence:
 		typeadc = confidence2dc(typea)
 		typebdc = confidence2dc(typeb)
+
 	## bed dict
 	if stat_chromosome:
 		beddca = bed2dc(beda)
 		beddcb = bed2dc(bedb)
+
 	## bitscore into dict
 	adc = bitscore2dc(owna)
 	bdc = bitscore2dc(ownb)
+
 	### total chr
 	with open(matchpair) as FILE:
 		match_list = []
@@ -90,25 +94,23 @@ def Filter ( blastfile,matchpair,beda,bedb,owna,ownb,typea,typeb,stat_chromosome
 		chrlist1 = '|'.join(CHR_1)
 		chrlist2 = '|'.join(CHR_2)
 		prefix_chr = [CHR_1,CHR_2]
-		#print prefix_chr
-	#
+	
 	chrinfo1 = printchr(CHR_1)
 	chrinfo2 = printchr(CHR_2)
-	#
+	
 	out = open(out_chr_info,'w')
 	out.write(chrlist1+'\t'+chrlist2)
 	out.close()
-	## get score
-	'''
-	filter similarity of pairs
-	'''
+	
+	## get score, filter similarity of pairs
 	with open(blastfile) as blast:
 		for i in blast:
 			i = i.strip().split('\t')
 			geneA = i[0]
 			geneB = i[1]
 			if geneA != geneB:
-				#=======   BSR   ================
+
+				# BSR
 				bitscore = i[11]
 				try:
 					bitAB = float(bdc[geneB])
@@ -119,7 +121,8 @@ def Filter ( blastfile,matchpair,beda,bedb,owna,ownb,typea,typeb,stat_chromosome
 						bitOb = float(bitscore)/float(bitAB)
 					except KeyError:
 						continue
-				#======  chromosome group  ======
+
+				# chromosome group
 				if stat_chromosome:
 					try:
 						chra = beddca[geneA]
@@ -136,7 +139,8 @@ def Filter ( blastfile,matchpair,beda,bedb,owna,ownb,typea,typeb,stat_chromosome
 							chromosome_group = 0
 				else:
 					chromosome_group = 0
-				#======  confidance  =======
+
+				# confidance
 				if stat_confidence:
 					try:
 						type_1 = typeadc[geneA]
@@ -151,43 +155,43 @@ def Filter ( blastfile,matchpair,beda,bedb,owna,ownb,typea,typeb,stat_chromosome
 						confidence = 1
 				else:
 					confidence = 0
-				##
+				
 				bitOb = '%.3f' % bitOb
 				gene_score = chromosome_group+confidence
 				print (geneA+'\t'+geneB+'\t'+str(bitOb)+'\t'+str(gene_score))
 
-####
+
 from optparse import OptionParser
 def main():
-	usage = "Usage: %prog -i \n" \
-		"Author: Chen,Yongming; chen_ym@cau.edu.cn; 2019-12-13\n" \
-		"Description: Get BSR and chromosome-group score of every hits"
+	usage = "Usage: %prog [options]\n" \
+		"Description: get BSR and chromosome group score of all hits"
 	parser = OptionParser(usage)
 	parser.add_option("-i", dest="blastfile",
-                  help="A blast B file", metavar="FILE")
+                  help="blast file of A to B", metavar="FILE")
 	parser.add_option("-m", dest="matchpair",
-                  help="homoeolog chromosome group", metavar="FILE")
+                  help="homolog chromosome group", metavar="FILE")
 	parser.add_option("-a", dest="beda",
-                  help="bed of A genome", metavar="FILE")
+                  help="bed A", metavar="FILE")
 	parser.add_option("-b", dest="bedb",
-                  help="bed of B genome", metavar="FILE")
+                  help="bed B", metavar="FILE")
 	parser.add_option("--oa", dest="owna",
-                  help="self-blast of A genome", metavar="FILE")
+                  help="self-blast of A", metavar="FILE")
 	parser.add_option("--ob", dest="ownb",
-                  help="self-blast of B genome", metavar="FILE")
+                  help="self-blast of B", metavar="FILE")
 	parser.add_option("--ta", dest="typea",
-                  help="confidence type of A genome", metavar="FILE")
+                  help="gene annotation confidence of A", metavar="FILE")
 	parser.add_option("--tb", dest="typeb",
-                  help="confidence type of B genome", metavar="FILE")
+                  help="gene annotation confidence of B", metavar="FILE")
 	parser.add_option("-r", action="store_false",  dest = "stat_chromosome",
-		help="Whether to count chromosome score [default: %default]",default = True, metavar="boolean")
+		help="count chromosome score [default: %default]",default = True, metavar="boolean")
 	parser.add_option("-c", action="store_true",  dest = "stat_confidence",
-	        help="Whether to count confidence score [default: %default]",default = False, metavar="boolean")
+	        help="count gene annotation confidence score [default: %default]",default = False, metavar="boolean")
 	parser.add_option("-o", dest="out_chr_info",
-                  help="out chromosome information chrNA|chrNB TuN", metavar="FILE")
+                  help="out chromosome information", metavar="FILE")
 	
 	(options, args) = parser.parse_args()
 	Filter(options.blastfile,options.matchpair,options.beda,options.bedb,options.owna,options.ownb,options.typea,options.typeb,options.stat_chromosome,options.stat_confidence,options.out_chr_info)
+
 ###
 if __name__ == "__main__":
 	main()

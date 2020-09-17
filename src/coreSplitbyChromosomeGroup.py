@@ -76,11 +76,10 @@ def Filter (blastfile,beda,bedb,matchpair,totalchr):
 from optparse import OptionParser
 def main():
 	usage = "Usage: %prog -i blast_A_to_B -l A.bed -f B.bed -m chrNA,TuN\n" \
-                "Author: Chen,Yongming; chen_ym@cau.edu.cn; 2019-12-14\n" \
-                "Description: Match hit by same chromosome\n"
+                "Description: Match hit by same chromosome"
 	parser = OptionParser(usage)
 	parser.add_option("-i", dest="blastfile",
-                  help="blast_A_to_B", metavar="FILE")
+                  help="blast file of A to B", metavar="FILE")
 	parser.add_option("-l", dest="beda",
                   help="A.bed", metavar="FILE")
 	parser.add_option("-f", dest="bedb",
@@ -88,7 +87,7 @@ def main():
 	parser.add_option("-m", dest="matchpair",
                   help="chrNA,TuN", metavar="FILE")
 	parser.add_option("-t", dest="totalchr",
-                  help="total chromosome file of re", metavar="FILE")
+                  help="chromosome name and re", metavar="FILE")
 	(options, args) = parser.parse_args()
 	Filter(options.blastfile,options.beda,options.bedb,options.matchpair,options.totalchr)
 ###

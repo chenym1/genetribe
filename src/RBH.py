@@ -55,22 +55,25 @@ def calculate(blast1,blast2):
 
 from optparse import OptionParser
 def main():
-	usage = "Usage: %prog -a input1 -b input2 > output\n" \
-        "Description: Obtain Reciprocal Best Hits (RBH)\n\n"\
+	usage = \
+	"Usage: %prog -a input1 -b input2\n" \
+        "Description: obtain Reciprocal Best Hits (RBH)\n"\
+	"\n"\
 	"Exmaple:\n"\
-	" Input1:\n"\
+	"  Input1:\n"\
 	"	A1	B1	100\n"\
 	"	A1	B2	200\n"\
-	" Input2\n"\
+	"  Input2\n"\
 	"	B1	A1	200\n"\
 	"	B2	A1	300\n"\
-	" Output:\n"\
+	"  Output:\n"\
 	"	A1	B2"
+
 	parser = OptionParser(usage)
 	parser.add_option("-a", dest="blast1",
-                  help="Input file1", metavar="FILE")
+                  help="input file1", metavar="FILE")
 	parser.add_option("-b", dest="blast2",
-                  help="Input file2", metavar="FILE")
+                  help="input file2", metavar="FILE")
 	(options, args) = parser.parse_args()
 	calculate(options.blast1,options.blast2)
 #

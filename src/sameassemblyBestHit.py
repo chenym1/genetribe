@@ -52,7 +52,7 @@ def cal(datafile,RBHfile):
 #
 from optparse import OptionParser
 def main():
-	usage = "Usage: %prog -a scorefile -b RBHfile > output"
+	usage = "Usage: %prog [options]"
 	parser = OptionParser(usage)
 	parser.add_option("-a", dest="scorefile",
 		help="score file", metavar="FILE")

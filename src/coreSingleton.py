@@ -42,7 +42,7 @@ def singleton(bedfile,one2onefile):
 
 from optparse import OptionParser
 def main():
-	usage = "Usage: %prog -a bedfile -b one2onefile > singleton"	
+	usage = "Usage: %prog [options]"
 	parser = OptionParser(usage)
 	parser.add_option("-a", dest="bedfile",
 		help="bed", metavar="FILE")

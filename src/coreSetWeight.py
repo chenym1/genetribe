@@ -44,15 +44,15 @@ def weight (inputfile,colinearity_percent,filterscore):
 
 from optparse import OptionParser
 def main():
-	usage = "Usage: %prog -i inputfile -a colinearity_percent -f filterscore > output\n" \
-	"Description: weighted score"
+	usage = "Usage: %prog [options]\n" \
+	"Description: weight score"
 	parser = OptionParser(usage)
 	parser.add_option("-i", dest="inputfile",
-                  help="Input file", metavar="FILE")
+		help="input file", metavar="FILE")
 	parser.add_option("-a", dest="colinearity_percent",default='50',
-                  help="the weight of colinearity score [default: %default]", metavar="FLOAT")
+		help="weight of colinearity score [default: %default]", metavar="FLOAT")
 	parser.add_option("-f", dest="filterscore",default='75',
-		  help="percent of filtered score [default: %default]", metavar="FLOAT")
+		help="percent of filtered score [default: %default]", metavar="FLOAT")
 	(options, args) = parser.parse_args()
 	weight(options.inputfile,options.colinearity_percent,options.filterscore)
 #

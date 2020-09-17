@@ -39,8 +39,7 @@ def dicr_gg(dic):
 		return tmp_dc+'/'
 	else:
 		return tmp_dc
-	#
-#
+
 def detect_bed_file(name1,name2,confidence_stat=False):
 	dicr = dicr_gg('./')
 	bed1 = dicr+name1+'.bed'
@@ -53,17 +52,15 @@ def detect_bed_file(name1,name2,confidence_stat=False):
 		file_list = [bed1,bed2,chrlist1,chrlist2,confidence1,confidence2]
 	else:
 		file_list = [bed1,bed2,chrlist1,chrlist2]
-	#
+	
 	not_exist_list = []
 	for num in range(len(file_list)):
 		if not os.path.exists(file_list[num]):
 			not_exist_list.append(file_list[num])
-		#
-	#
+	
 	if len(not_exist_list) > 0 :
 		print ("\n[ERROR]:\n\tFile cannot be found:"+' '.join(not_exist_list))
 		exit(-1)
-	#
 #
 def detect_blast_file(dicr,name1,name2):
 	dicr = dicr_gg(dicr)
@@ -77,8 +74,7 @@ def detect_blast_file(dicr,name1,name2):
 		for num in range(4):
 			if not os.path.exists(file_list[num]):
 				not_exist_list.append(file_list[num])
-			#
-		#
+
 	else:
 		not_exist_list = []
 		blast_file = dicr+name1+'_'+name2+'.blast'
@@ -86,11 +82,9 @@ def detect_blast_file(dicr,name1,name2):
 		for num in range(1):
 			if not os.path.exists(file_list[num]):
 				not_exist_list.append(file_list[num])
-			#
-		#
-	#
+	
 	return not_exist_list
-#
+
 def detect_fasta_file(name1,name2):
 	dicr = dicr_gg('./')
 	fa1 = dicr+name1+'.fa'
@@ -104,11 +98,9 @@ def detect_fasta_file(name1,name2):
 		if not os.path.exists(file_list[num]):
 			if not os.path.exists(file_list2[num]):
 				not_exist_list.append(file_list[num])
-			#
-		#
-	#
+	
 	return not_exist_list
-#
+
 def blast(dicr2,name1,name2,evalue,num_threads,fa_str="."):
 	DIR = os.path.dirname(sys.argv[0])
 	evalue = str(evalue)
@@ -199,24 +191,22 @@ def detect_total(dicr,name1,name2,evalue = 1e-5,num_threads = 36,fa_str = ".",co
 from optparse import OptionParser
 def main():
 	usage = "Usage: %prog [options] \n"\
-		"Description: Check for file existence and blast.\n"\
-		"Contact:     Chen, Yongming; chen_yongming@126.com;\n"\
-		"Last Update: 2020-05-02"
+		"Description: check for file and blast\n"
 	parser = OptionParser(usage)
 	parser.add_option("-d", dest="directory",
-		help="Pre-computed BLAST file in <dir> [Default: %default]", metavar="DIRECTORY",default='./')
+		help="pre-computed BLAST file in <dir> [Default: %default]", metavar="DIRECTORY",default='./')
 	parser.add_option("-a", dest="name1",
-		help="First name", metavar="STRING")
+		help="first name", metavar="STRING")
 	parser.add_option("-b", dest="name2",
-		help="Second name", metavar="STRING")
+		help="second name", metavar="STRING")
 	parser.add_option("-e", dest="evalue",metavar="",
-		help="E-value for BLASTP [Default: %default]",default=1e-5)
+		help="e-value for BLASTP [Default: %default]",default=1e-5)
 	parser.add_option("-n", dest="num_threads",metavar="INT",
-		help="Num threads for BLASTP [Default: %default]",default=36)
+		help="num threads for BLASTP [Default: %default]",default=36)
 	parser.add_option("-f", dest="fa_str",metavar="STRING",
-		help="The separator between gene name and number in the header of fasta [Default: %default]",default=".")
+		help="the string for spliting gene from transcript ID [Default: %default]",default=".")
 	parser.add_option("-c", dest="confidence_stat",action="store_true",
-		help="Confidence file detect [Default: %default]",default=False)
+		help="detect confidence file [Default: %default]",default=False)
 	(options, args) = parser.parse_args()
 	detect_total(options.directory,options.name1,options.name2,options.evalue,options.num_threads,options.fa_str,options.confidence_stat)
 #===================================

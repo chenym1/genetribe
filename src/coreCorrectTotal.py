@@ -25,7 +25,7 @@ DEALINGS IN THE SOFTWARE.
 
 import sys
 import re
-#
+
 def correct ( rawfile , totalchr , bed ):
 	with open(totalchr) as TOTALCHR:
 		TOTALCHR1 = TOTALCHR.readline()
@@ -45,22 +45,24 @@ def correct ( rawfile , totalchr , bed ):
 			if not re.search(rawCHR,CHR):
 				i[3] = "unknown"
 			print ('\t'.join(i))
-#
+
+
 from optparse import OptionParser
+
 # ===========================================
 def main():
-	usage = "Usage: %prog -i rawfile -t totalchr -b bed\n" \
-   	     "Description: correct total file"
+	usage = "Usage: %prog [options]\n" \
+   	     "Description: correct one2one file"
 	parser = OptionParser(usage)
 	parser.add_option("-i", dest="rawfile",
-                  help="Input total file", metavar="FILE")
+                  help="Input one2one file", metavar="FILE")
 	parser.add_option("-t", dest="totalchr",
-                  help="total chromosome", metavar="FILE")
+                  help="all chromosome", metavar="FILE")
 	parser.add_option("-b", dest="bed",
-                  help="second bed file", metavar="FILE")
+                  help="bed 2", metavar="FILE")
 	(options, args) = parser.parse_args()
 
 	correct (options.rawfile,options.totalchr,options.bed)
-# ===========================================
+#
 if __name__ == "__main__":
 	main( )

@@ -196,24 +196,22 @@ def detect_total(dicr,name1,name2,evalue = 1e-5,num_threads = 36,fa_str = ".",co
 from optparse import OptionParser
 def main():
 	usage = "Usage: %prog [options] \n"\
-		"Description: Check for file existence and blast (nog).\n"\
-		"Contact:     Chen, Yongming; chen_yongming@126.com;\n"\
-		"Last Update: 2020-07-02"
+		"Description: check for file and blast (nog)\n"
 	parser = OptionParser(usage)
 	parser.add_option("-d", dest="directory",
-		help="Pre-computed BLAST file in <dir> [Default: %default]", metavar="DIRECTORY",default='./')
+		help="pre-computed BLAST file in <dir> [Default: %default]", metavar="DIRECTORY",default='./')
 	parser.add_option("-a", dest="name1",
-		help="First name", metavar="STRING")
+		help="first name", metavar="STRING")
 	parser.add_option("-b", dest="name2",
-		help="Second name", metavar="STRING")
+		help="second name", metavar="STRING")
 	parser.add_option("-e", dest="evalue",metavar="",
-		help="E-value for BLASTP [Default: %default]",default=1e-5)
+		help="e-value for BLASTP [Default: %default]",default=1e-5)
 	parser.add_option("-n", dest="num_threads",metavar="INT",
-		help="Num threads for BLASTP [Default: %default]",default=36)
+		help="num threads for BLASTP [Default: %default]",default=36)
 	parser.add_option("-f", dest="fa_str",metavar="STRING",
-		help="The separator between gene name and number in the header of fasta [Default: %default]",default=".")
+		help="the string for spliting gene from transcript ID [Default: %default]",default=".")
 	parser.add_option("-c", dest="confidence_stat",action="store_true",
-		help="Confidence file detect [Default: %default]",default=False)
+		help="detect confidence file [Default: %default]",default=False)
 	(options, args) = parser.parse_args()
 	detect_total(options.directory,options.name1,options.name2,options.evalue,options.num_threads,options.fa_str,options.confidence_stat)
 #===================================

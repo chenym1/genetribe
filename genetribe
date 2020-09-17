@@ -27,7 +27,7 @@ import subprocess
 import os
 
 def PrintVersion() :
-	print ("Version: 1.0.0 (2020)")
+	print ("Version: 1.0.0")
 
 argv_len = len(sys.argv)
 
@@ -35,7 +35,7 @@ DIR=os.path.dirname(sys.argv[0])
 
 if (argv_len) == 1  or sys.argv[1] in ["-h", "-H", "--help"]:
 	print ("")
-	print ("Program: GeneTribe (a tool for homolog inference)")
+	print ("Program: GeneTribe (a tool for homology inference)")
 	PrintVersion()
 	print ("")
 	print ("Usage: genetribe <command> [options]")
@@ -45,14 +45,16 @@ if (argv_len) == 1  or sys.argv[1] in ["-h", "-H", "--help"]:
 	print ("[ pipeline ]")
 	print ("     core           Core workflow of GeneTribe")
 	print ("     corenog        Workflow not grouping chromosomes")
-	print ("     sameassembly   Homolog inference for the same assembly")
+	print ("     sameassembly   Homology inference for the same assembly")
 	print ("")
 	print ("[ tool ]")
 	print ("     RBH            Obtain Reciprocal Best Hits (RBH)")
 	print ("     CBS            Calculate Collinearity Block Score (CBS)")
 	print ("     longestcds     Extract longest protein sequence from protein fasta")
 	print ("")
-	print ("Author: Chen,Yongming; chen_yongming@126.com")
+	print ("Author:    Chen,Yongming")
+	print ("Email:     chen_yongming@126.com")
+	print ("Homepage:  https://chenym1.github.io/genetribe/")
 	print ("")
 else:
 	if argv_len == 2 or sys.argv[2] in ["-h", "-H", "--help"]:

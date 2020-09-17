@@ -31,9 +31,8 @@ def getbed(bed):
 		for i in BED:
 			i = i.strip().split('\t')
 			dc[i[3]] = [i[0],int(i[1])]
-		#
 	return dc
-#
+
 def file2colinearitydc(colinearity_file):
 	colinearity_block = {}
 	with open(colinearity_file) as FILE:
@@ -42,8 +41,7 @@ def file2colinearitydc(colinearity_file):
 			key = i[0]+','+i[3]
 			info = [int(i[1]),int(i[2]),int(i[4]),int(i[5]),float(i[6])]
 			colinearity_block.setdefault(key,[]).append(info)
-		#
-	#
+	
 	return colinearity_block
 
 #
@@ -74,24 +72,20 @@ def merge(colinearity_block,dc1,dc2,score):
 					tmp_pos = info[j]
 					if tmp_pos[0] <= start1 <= tmp_pos[1] and tmp_pos[2] <= start2 <= tmp_pos[3]:
 						score_list.append(float(tmp_pos[4]))
-					#
-				#
-			#
+			
 			if len(score_list) ==0:
 				block_score = 0
 			else:
 				block_score = np.median(score_list)
 			print ('\t'.join(i)+'\t'+str(block_score))
-		#
-	#
 #
 
 from optparse import OptionParser
 def main():
-	usage = "Usage: %prog -i score -c colinearityScore -a bed1 -b bed2 > output\n" \
-	"Description: merge score, and calculate the gene score in the colinearity block"
+	usage = "Usage: %prog [options]\n" \
+	"Description: merge score"
 	parser = OptionParser(usage)
-	parser.add_option("-i", dest="score",help="Input file", metavar="FILE")
+	parser.add_option("-i", dest="score",help="input file", metavar="FILE")
 	parser.add_option("-c", dest="colinearityScore",help="block_pos file", metavar="FILE")
 	parser.add_option("-a", dest = "bed1_file",help="first bed",metavar="FILE")
 	parser.add_option("-b", dest="bed2_file",help="second bed", metavar="FILE")

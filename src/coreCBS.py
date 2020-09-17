@@ -94,12 +94,15 @@ def count_median(block_dc,bed1tmp,bed2tmp):
 
 # final step
 def final(block_dc,pair_dc,bed1tmp,bed2tmp,outname):
+
 	out1 = open(outname+'.colinearity_info','w')
 	out2 = open(outname+'.block_pos','w')
 	block_num = 1
 	median = count_median(block_dc,bed1tmp,bed2tmp)
 	out1.write("## median:"+str(median)+'\n')
+
 	for i in block_dc.keys():
+
 		gene_list1 = block_dc[i][0]
 		gene_list2 = block_dc[i][1]
 		infoA = getinfo(bed1tmp,gene_list1)
@@ -118,15 +121,15 @@ def final(block_dc,pair_dc,bed1tmp,bed2tmp,outname):
 #
 from optparse import OptionParser
 def main():
-	usage = "Usage: %prog -i input.anchors -a bed1 -b bed2 > outputfile\n" \
-            "Description: Calculate Collinearity Block Score (CBS)"
+	usage = "Usage: %prog -i input.anchors -a bed1 -b bed2 -o outname\n" \
+            "Description: calculate Collinearity Block Score (CBS)"
 	parser = OptionParser(usage)
 	parser.add_option("-i", dest="block_file",
-                  help="The block anchors file obtaining from MCScan", metavar="FILE")
+                  help="block obtaining from MCScan", metavar="FILE")
 	parser.add_option("-a", dest="bed1",
-		help="First bed", metavar="FILE")
+		help="bed 1", metavar="FILE")
 	parser.add_option("-b", dest="bed2",
-                help="Second bed", metavar="FILE")
+                help="bed 2", metavar="FILE")
 	parser.add_option("-o", dest="outname",
                 help="prefix name of output file", metavar="STR")
 	(options, args) = parser.parse_args()

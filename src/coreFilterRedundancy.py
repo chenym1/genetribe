@@ -28,7 +28,6 @@ import numpy as np
 from math import log
 
 # score count
-
 def score_count ( sim,mina,minb,maxa,maxb,bitscore_out,evalue_raw):
 	mina2 = min(mina)
 	minb2 = min(minb)
@@ -41,7 +40,6 @@ def score_count ( sim,mina,minb,maxa,maxb,bitscore_out,evalue_raw):
 	return [similarity,length,evalue,bitscore]
 
 # Store data to discover multiple pieces of information
-
 def getinfo (inputfile):
 	dc_raw = {}
 	with open(inputfile) as FILE:
@@ -52,11 +50,10 @@ def getinfo (inputfile):
 	return dc_raw
 
 # Filter redundant
-
 def Filter_redundant (inputfile):
-	#
+	
 	dc = getinfo(inputfile)
-	#
+	
 	for k,v in dc.items():
 		if len(v) == 1: # only have one hits
 			print ('\t'.join(v[0]))
@@ -76,30 +73,27 @@ def Filter_redundant (inputfile):
 				maxa.append(float(info[7]))
 				maxb.append(float(info[9]))
 				bitscore_out.append(float(info[2])/100*float(info[11]))
-				#
+				
 				try:
 					evalue_raw.append(-log(float(info[10]),10))
 				except ValueError:
 					evalue_raw.append(100)
-			#
+			
 			info = score_count(sim,mina,minb,maxa,maxb,bitscore_out,evalue_raw)
-			#
+			
 			print (k+'\t'+str(info[0])+'\t'+str(info[1])+'\t0\t0\t1\t'+str(info[1])+'\t1\t'+str(info[1])+'\t'+str(info[2])+'\t'+str(info[3]))
 
-#
 
 from optparse import OptionParser
 
 def main():
-	usage = "Usage: %prog -i input.blast > outputfile\n" \
-		"Filter blast-result's redundant information\n" \
-		"Print to stdout"
+	usage = "Usage: %prog [options]\n" \
+		"Description: filter redundant information of blast hits"
 	parser = OptionParser(usage)
 	parser.add_option("-i", dest="infile",
-                  help="Input file", metavar="FILE")
+                  help="input file", metavar="FILE")
 	(options, args) = parser.parse_args()
 	Filter_redundant(options.infile)
 
-#
 if __name__ == "__main__":
 	main()
