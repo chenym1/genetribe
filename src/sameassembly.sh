@@ -80,7 +80,7 @@ logo () {
 }
 logo
 
-echo `gettime`"prepare raw files..."
+echo `gettime`"prepare files..."
 not_file=""
 if [ ! -f "${aname}.bed" ];then
 	not_file=${not_file}" ${aname}.bed"

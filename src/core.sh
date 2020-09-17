@@ -113,7 +113,7 @@ logo () {
 }
 logo
 
-echo `gettime`"prepare raw files..."
+echo `gettime`"prepare files..."
 
 ${dec}/coredetectFileExist \
 	-d ${directory-./} \

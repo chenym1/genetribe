@@ -108,7 +108,7 @@ logo () {
 }
 logo
  
-echo `gettime`"prepare original files..."
+echo `gettime`"prepare files..."
 
 ${dec}/corenog-detectFileExist \
 	-d ${directory-./} \
