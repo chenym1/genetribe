@@ -34,14 +34,15 @@ def sh(cmd_String):
 	return subprocess.getstatusoutput(cmd_String)
 
 def dicr_gg(dic):
-	if not dic.endswith('/'):
-		return dic+'/'
+	tmp_dc = os.path.abspath(dic)
+	if not tmp_dc.endswith('/'):
+		return tmp_dc+'/'
 	else:
-		return dic
+		return tmp_dc
 	#
 #
 def detect_bed_file(name1,name2,confidence_stat=False):
-	dicr = './'
+	dicr = dicr_gg('./')
 	bed1 = dicr+name1+'.bed'
 	bed2 = dicr+name2+'.bed'
 	confidence1 = dicr+name1+'.confidence'
@@ -89,7 +90,7 @@ def detect_blast_file(dicr,name1,name2):
 	return not_exist_list
 #
 def detect_fasta_file(name1,name2):
-	dicr = './'
+	dicr = dicr_gg('./')
 	fa1 = dicr+name1+'.fa'
 	fa2 = dicr+name2+'.fa'
 	long_fa1 = dicr+name1+'_long.fa'
@@ -111,8 +112,8 @@ def blast(dicr2,name1,name2,evalue,num_threads,fa_str="."):
 	evalue=str(evalue)
 	dicr2 = dicr_gg(dicr2)
 	not_exist_blast = detect_blast_file(dicr2,name1,name2)
-	dicr = './output/'
-	tmp_out = './output/'
+	dicr = dicr_gg('./output/')
+	tmp_out = dicr
 	if not os.path.exists(tmp_out):
 		os.makedirs(tmp_out)
 	else:
@@ -179,7 +180,7 @@ def blast(dicr2,name1,name2,evalue,num_threads,fa_str="."):
 					executor.map(sh,blast_task)
 				#
 			else:
-				fa1 = dicr+name1+'.fa'
+				fa1 = './'+name1+'.fa'
 				long_fa1 = tmp_out+name1+'_long.fa'
 				db1 = tmp_out+name1+'_db/'+name1
 				sh(DIR+'/longestfasta -i '+fa1+' -s '+fa_str+' > '+long_fa1)
