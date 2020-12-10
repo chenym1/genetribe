@@ -105,13 +105,17 @@ def blast(dicr2,name1,name2,evalue,num_threads,fa_str="."):
 	DIR = os.path.dirname(sys.argv[0])
 	evalue = str(evalue)
 	dicr2 = dicr_gg(dicr2)
-	not_exist_blast = detect_blast_file(dicr2,name1,name2)
+	#
 	dicr = dicr_gg('./output/')
 	tmp_out = dicr
 	if not os.path.exists(tmp_out):
 		os.makedirs(tmp_out)
 	else:
 		shutil.rmtree(tmp_out)
+		os.makedirs(tmp_out)
+	#
+	not_exist_blast = detect_blast_file(dicr2,name1,name2)
+	#
 	if len(not_exist_blast) == 0:
 		if name1 != name2:
 			sh('ln -s '+dicr2+name1+'_'+name2+'.blast '+dicr+name1+'_'+name2+'.blast')
