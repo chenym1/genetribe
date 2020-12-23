@@ -73,7 +73,7 @@ logo () {
         echo "   ==============================="
         echo "  ||                             ||"
         echo "  ||         GeneTribe           ||"
-        echo "  ||       Version: v1.0.0       ||"
+        echo "  ||       Version: v1.1.0       ||"
         echo "  ||                             ||"
         echo "   ==============================="
         echo ""
