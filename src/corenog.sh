@@ -130,9 +130,9 @@ fi
 #===
 echo `gettime`"calculate BSR, CBS and Penalty..."
 
-for key in ${aname}_${bname} ${bname}_${aname};do
+for key in ${aname}__${bname} ${bname}__${aname};do
 
-	array=(${key//_/ })
+	array=(${key//__/ })
         array=${array[@]}
         key1=`echo $array | gawk '{print $1}'`
         key2=`echo $array | gawk '{print $2}'`
