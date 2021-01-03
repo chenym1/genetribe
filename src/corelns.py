@@ -29,13 +29,13 @@ import sys
 def sh(cmd_String):
 	return subprocess.getstatusoutput(cmd_String)
 
-def changechrname(IN,OUT):
-	IN = open(IN).readlines()
-	OUT = open(OUT,'w')
-	for i in IN:
-		i = i.strip().split('\t')
-		i[0] = 'chr'+i[0]
-		OUT.write('\t'.join(i)+'\n')
+#def changechrname(IN,OUT):
+#	IN = open(IN).readlines()
+#	OUT = open(OUT,'w')
+#	for i in IN:
+#		i = i.strip().split('\t')
+#		i[0] = 'chr'+i[0]
+#		OUT.write('\t'.join(i)+'\n')
 
 def lns(name1,name2,confidence_stat):
 	DIR=os.path.dirname(sys.argv[0])
@@ -53,14 +53,14 @@ def lns(name1,name2,confidence_stat):
 		bed_path1 = os.path.abspath(name1+'.bed')
 		bed_path2 = os.path.abspath(name2+'.bed')
 		#
-		changechrname(bed_path1,out_dic+name1+'.bed')
-		changechrname(bed_path2,out_dic+name2+'.bed')
-		#sh(' '.join(['ln -s',bed_path1,out_dic+name1+'.bed']))
-		#sh(' '.join(['ln -s',bed_path2,out_dic+name2+'.bed']))
-		sh(' '.join(['cat',name1+'.chrlist','>',out_dic+name1+'_'+name2+'.matchlist']))
-		sh(' '.join(['cat',name2+'.chrlist','>>',out_dic+name1+'_'+name2+'.matchlist']))
-		sh(' '.join(['cat',name2+'.chrlist','>',out_dic+name2+'_'+name1+'.matchlist']))
-		sh(' '.join(['cat',name1+'.chrlist','>>',out_dic+name2+'_'+name1+'.matchlist']))
+		#changechrname(bed_path1,out_dic+name1+'.bed')
+		#changechrname(bed_path2,out_dic+name2+'.bed')
+		sh(' '.join(['ln -s',bed_path1,out_dic+name1+'.bed']))
+		sh(' '.join(['ln -s',bed_path2,out_dic+name2+'.bed']))
+		sh(' '.join(['cat',name1+'.chrlist | gawk "{print $1}"','>',out_dic+name1+'_'+name2+'.matchlist']))
+		sh(' '.join(['cat',name2+'.chrlist | gawk "{print $1}"','>>',out_dic+name1+'_'+name2+'.matchlist']))
+		sh(' '.join(['cat',name2+'.chrlist | gawk "{print $1}"','>',out_dic+name2+'_'+name1+'.matchlist']))
+		sh(' '.join(['cat',name1+'.chrlist | gawk "{print $1}"','>>',out_dic+name2+'_'+name1+'.matchlist']))
 		if confidence_stat:
 			confidence_path1 = os.path.abspath(name1+'.confidence')
 			sh(' '.join(['ln -s',confidence_path1,out_dic+name1+'.confidence']))
@@ -78,8 +78,8 @@ def lns(name1,name2,confidence_stat):
 		bed_path1 = os.path.abspath(name1+'.bed')
 		sh(' '.join(['ln -s',bed_path1,out_dic+name1+'.bed']))
 		sh(' '.join(['ln -s',bed_path1,out_dic+name2+'.bed']))
-		sh(' '.join(['cat',name1+'.chrlist','>',out_dic+name1+'_'+name2+'.matchlist']))
-		sh(' '.join(['cat',name1+'.chrlist','>>',out_dic+name1+'_'+name2+'.matchlist']))
+		sh(' '.join(['cat',name1+'.chrlist | gawk "{print $1}"','>',out_dic+name1+'_'+name2+'.matchlist']))
+		sh(' '.join(['cat',name1+'.chrlist | gawk "{print $1}"','>>',out_dic+name1+'_'+name2+'.matchlist']))
 		sh(' '.join(['cp',out_dic+name1+'_'+name2+'.matchlist',out_dic+name2+'_'+name1+'.matchlist']))
 		if confidence_stat:
 			confidence_path1 = os.path.abspath(name1+'.confidence')

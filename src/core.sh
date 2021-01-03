@@ -141,25 +141,25 @@ for key in ${aname}__${bname} ${bname}__${aname};do
         array=${array[@]}
         key1=`echo $array | gawk '{print $1}'`
         key2=`echo $array | gawk '{print $2}'`
-
+	keynew=${key1}_${key2}
 	${dec}/coreCalculateScore \
-                -i ${key}.blast2 \
-                -m ${key}.matchlist \
+                -i ${keynew}.blast2 \
+                -m ${keynew}.matchlist \
                 -a ${key1}.bed \
                 -b ${key2}.bed \
                 --oa ${key1}_${key1}.blast2 \
                 --ob ${key2}_${key2}.blast2 \
                 ${dont_stat_chromosome_group} \
 		${stat_confidence} \
-		-o ${key}.chrinfo > ${key}.score1
+		-o ${keynew}.chrinfo > ${keynew}.score1
 
 	echo ""
 	python -m jcvi.compara.catalog ortholog ${key1} ${key2}
 	echo ""
 
-	${dec}/coreCBS -i ${key1}.${key2}.lifted.anchors -a ${key1}.bed -b ${key2}.bed -o ${key}
+	${dec}/coreCBS -i ${key1}.${key2}.lifted.anchors -a ${key1}.bed -b ${key2}.bed -o ${keynew}
 
-	${dec}/coreMergeScore -i ${key}.score1 -c ${key}.block_pos -a ${key1}.bed -b ${key2}.bed > ${key}.score2
+	${dec}/coreMergeScore -i ${keynew}.score1 -c ${keynew}.block_pos -a ${key1}.bed -b ${key2}.bed > ${keynew}.score2
 
 done
 
@@ -281,24 +281,25 @@ done
 #===
 echo `gettime`"merge results..."
 
-for key in ${aname}_${bname} ${bname}_${aname};do
+for key in ${aname}__${bname} ${bname}__${aname};do
 
-	array=(${key//_/ })
+	array=(${key//__/ })
 	array=${array[@]}
 	key1=`echo $array | gawk '{print $1}'`
 	key2=`echo $array | gawk '{print $2}'`
+	keynew=${key1}_${key2}
 
-	cat ${key}.BMP | gawk -vOFS='\t' '{print $1,$2,"RBH",$3}' > ${key}.raw_total
-	cat ${key}.single_end | gawk -vOFS='\t' '{print $1,$2,"SBH",$3}' >> ${key}.raw_total
+	cat ${keynew}.BMP | gawk -vOFS='\t' '{print $1,$2,"RBH",$3}' > ${keynew}.raw_total
+	cat ${keynew}.single_end | gawk -vOFS='\t' '{print $1,$2,"SBH",$3}' >> ${keynew}.raw_total
 
-	${dec}/coreCorrectTotal -i ${key}.raw_total -t ${key}.chrinfo -b ${key2}.bed > ${key}.raw_total2
+	${dec}/coreCorrectTotal -i ${keynew}.raw_total -t ${keynew}.chrinfo -b ${key2}.bed > ${keynew}.raw_total2
 
-	${dec}/corermTwoType -i ${key}.raw_total2 > ${key}.raw_total3
+	${dec}/corermTwoType -i ${keynew}.raw_total2 > ${keynew}.raw_total3
 
-	${dec}/corebestUnGene -i ${key}.raw_total3 -t ${key}.chrinfo \
-		-c ${key}.weighted_score -b ${key1}.bed > ${key}.total
+	${dec}/corebestUnGene -i ${keynew}.raw_total3 -t ${keynew}.chrinfo \
+		-c ${keynew}.weighted_score -b ${key1}.bed > ${keynew}.total
 
-	${dec}/coreSingleton -a ${key1}.bed -b ${key}.total > ${key}.singleton
+	${dec}/coreSingleton -a ${key1}.bed -b ${keynew}.total > ${keynew}.singleton
 
 done
 

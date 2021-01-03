@@ -136,22 +136,23 @@ for key in ${aname}__${bname} ${bname}__${aname};do
         array=${array[@]}
         key1=`echo $array | gawk '{print $1}'`
         key2=`echo $array | gawk '{print $2}'`
+	keynew=${key1}_${key2}
 
 	${dec}/corenog-CalculateScore \
-                -i ${key}.blast2 \
+                -i ${keynew}.blast2 \
                 -a ${key1}.bed \
                 -b ${key2}.bed \
                 --oa ${key1}_${key1}.blast2 \
                 --ob ${key2}_${key2}.blast2 \
-		${stat_confidence} > ${key}.score1
+		${stat_confidence} > ${keynew}.score1
 
 	echo ""
 	python -m jcvi.compara.catalog ortholog ${key1} ${key2}
 	echo ""
 
-	${dec}/coreCBS -i ${key1}.${key2}.lifted.anchors -a ${key1}.bed -b ${key2}.bed -o ${key}
+	${dec}/coreCBS -i ${key1}.${key2}.lifted.anchors -a ${key1}.bed -b ${key2}.bed -o ${keynew}
 
-	${dec}/coreMergeScore -i ${key}.score1 -c ${key}.block_pos -a ${key1}.bed -b ${key2}.bed > ${key}.score2
+	${dec}/coreMergeScore -i ${keynew}.score1 -c ${keynew}.block_pos -a ${key1}.bed -b ${key2}.bed > ${keynew}.score2
 
 done
 
@@ -219,17 +220,18 @@ ${dec}/coreSingleSideBest -a ${bname}_${aname}.weighted_score \
 #===
 echo `gettime`"merged results..."
 
-for key in ${aname}_${bname} ${bname}_${aname};do
+for key in ${aname}__${bname} ${bname}__${aname};do
 
-	array=(${key//_/ })
+	array=(${key//__/ })
 	array=${array[@]}
 	key1=`echo $array | gawk '{print $1}'`
 	key2=`echo $array | gawk '{print $2}'`
+	keynew=${key1}_${key2}
 
-	cat ${key}.BMP | gawk -vOFS='\t' '{print $1,$2,"RBH"}' > ${key}.total
-	cat ${key}.single_end | gawk -vOFS='\t' '{print $1,$2,"SBH"}' >> ${key}.total
+	cat ${keynew}.BMP | gawk -vOFS='\t' '{print $1,$2,"RBH"}' > ${keynew}.total
+	cat ${keynew}.single_end | gawk -vOFS='\t' '{print $1,$2,"SBH"}' >> ${keynew}.total
 
-	${dec}/coreSingleton -a ${key1}.bed -b ${key}.total > ${key}.singleton
+	${dec}/coreSingleton -a ${key1}.bed -b ${keynew}.total > ${keynew}.singleton
 
 done
 
