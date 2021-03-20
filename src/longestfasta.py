@@ -31,7 +31,7 @@ def longestfasta( infile,strsp):
 			if line.startswith('>'):
 				ID = line
 				dc[ID] = ''
-			else:
+			elif not line.startswith('#'):
 				dc[ID] += line
 	#
 	max_dc = {}
