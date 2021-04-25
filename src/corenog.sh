@@ -147,7 +147,7 @@ for key in ${aname}__${bname} ${bname}__${aname};do
 		${stat_confidence} > ${keynew}.score1
 
 	echo ""
-	python -m jcvi.compara.catalog ortholog ${key1} ${key2}
+	python -m jcvi.compara.catalog ortholog --no_strip_names ${key1} ${key2}
 	echo ""
 
 	${dec}/coreCBS -i ${key1}.${key2}.lifted.anchors -a ${key1}.bed -b ${key2}.bed -o ${keynew}
