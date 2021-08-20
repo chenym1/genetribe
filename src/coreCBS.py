@@ -96,7 +96,7 @@ def count_median(block_dc,bed1tmp,bed2tmp):
 def final(block_dc,pair_dc,bed1tmp,bed2tmp,outname):
 
 	out1 = open(outname+'.colinearity_info','w')
-	out2 = open(outname+'.block_pos','w')
+	#out2 = open(outname+'.block_pos','w')
 	block_num = 1
 	median = count_median(block_dc,bed1tmp,bed2tmp)
 	out1.write("## median:"+str(median)+'\n')
@@ -115,7 +115,7 @@ def final(block_dc,pair_dc,bed1tmp,bed2tmp,outname):
 		score = "%.3f" % ( count / (count+median) )
 		ratio = (float(len(gene_list1))*infoB[1]+float(len(gene_list2))*infoA[1])/(2*infoA[1]*infoB[1])
 		out1.write('\t'.join([name_id,pos,str(count),str(ratio),str(score),pair])+'\n')
-		out2.write('\t'.join([str(infoA[0][0]),str(infoA[0][1]),str(infoA[0][2]),str(infoB[0][0]),str(infoB[0][1]),str(infoB[0][2]),str(score)])+'\n')
+		#out2.write('\t'.join([str(infoA[0][0]),str(infoA[0][1]),str(infoA[0][2]),str(infoB[0][0]),str(infoB[0][1]),str(infoB[0][2]),str(score)])+'\n')
 		block_num += 1
 
 #
