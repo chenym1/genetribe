@@ -113,9 +113,9 @@ ln -s ../${bname}.genelength ./
 #
 
 echo `gettime`"obtain overlap between genes..."
-bedtools intersect -a ${aname}.bed -b ${bname}.bed -sorted -wao | \
+bedtools intersect -a ${aname}.bed -b ${bname}.bed -sorted -s -wao | \
                 gawk -v OFS='\t' '{if($13!=""&&$13!="0"){print $4,$10,$13}}' > ${aname}_${bname}.overlap
-bedtools intersect -a ${bname}.bed -b ${aname}.bed -sorted -wao | \
+bedtools intersect -a ${bname}.bed -b ${aname}.bed -sorted -s -wao | \
                 gawk -v OFS='\t' '{if($13!=""&&$13!="0"){print $4,$10,$13}}' > ${bname}_${aname}.overlap
 #
 
