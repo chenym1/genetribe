@@ -33,6 +33,7 @@ gettime() {
 
 dont_stat_chromosome_group=""
 stat_confidence=""
+count_collinearity=""
 
 Usage () {
 	echo ""
@@ -53,12 +54,13 @@ Usage () {
 	echo "  -e         E-value of BLASTP [default 1e-5]"
 	echo "  -n <int>   Number of threads for blast [default 36]"
 	echo "  -b <float> Threshold based on BSR for filtering Match Score(0-100) [default 75]"
+	echo "  -m         Using collinearity as weight [default True]"
 	echo ""
 	echo "Author: Chen,Yongming; chen_yongming@126.com"
 	echo ""
 	exit 1
 }
-while getopts "hl:f:d:rcs:e:n:b:" opt
+while getopts "hl:f:d:rcs:e:n:b:m" opt
 do
     case $opt in
         h)
@@ -91,6 +93,9 @@ do
 		;;
 	b)
 		score_threshold=$OPTARG
+		;;
+	m)
+		count_collinearity="-m"
 		;;
         ?)
                 echo "Unknow argument!"
@@ -132,6 +137,7 @@ cd ./output
 if [ "$aname"x = "$bname"x ];then
 	bname=${aname}itself
 fi
+
 #===
 echo `gettime`"calculate BSR, CBS and Penalty..."
 
@@ -171,46 +177,50 @@ ${dec}/coreScore2one -a ${aname}_${bname}.score2 -b ${bname}_${aname}.score2 > $
 cat ${aname}_${bname}.score | gawk -vOFS='\t' '{print $2,$1,$3,$4,$5}' > ${bname}_${aname}.score
 
 #===
-echo `gettime`"evaluate optimal α for weighting score..."
+if [ ${count_collinearity}x = ""x ];then
+	
+	echo `gettime`"evaluate optimal α for weighting score..."
+	
+	chr11=`sed -n '1p' ${aname}_${bname}.matchlist | gawk -vFS=',' '{print $1}'`
+	chr22=`sed -n '2p' ${aname}_${bname}.matchlist | gawk -vFS=',' '{print $1}'`
+	
+	${dec}/coreSplitbyChromosomeGroup \
+		-i ${aname}_${bname}.score \
+		-l ${aname}.bed \
+		-f ${bname}.bed \
+		-m ${chr11},${chr22} \
+		-t ${aname}_${bname}.chrinfo > ${aname}_${bname}_chr11xchr22.score
+	${dec}/coreSplitbyChromosomeGroup \
+		-i ${bname}_${aname}.score \
+		-l ${bname}.bed \
+		-f ${aname}.bed \
+		-m ${chr22},${chr11} \
+		-t ${bname}_${aname}.chrinfo > ${bname}_${aname}_chr22xchr11.score
+	
+	for value in 0 5 10 15 20 25 30 35 40 45 50 55 60 65 70 75 80 85 90 95 99;do
+	
+		${dec}/coreSetWeight -i ${aname}_${bname}_chr11xchr22.score -a ${value} -f ${score_threshold-75} \
+			> ${aname}_${bname}_chr11xchr22.weighted_score
+	
+		${dec}/coreSetWeight -i ${bname}_${aname}_chr22xchr11.score -a ${value} -f ${score_threshold-75} \
+			> ${bname}_${aname}_chr22xchr11.weighted_score
+	
+		totalnum=`cat ${aname}.bed | wc -l`
+	
+		${dec}/RBH -a ${aname}_${bname}_chr11xchr22.weighted_score -b ${bname}_${aname}_chr22xchr11.weighted_score \
+			> ${aname}_${bname}_chr11xchr22.BMP
+	
+		wc -l ${aname}_${bname}_chr11xchr22.BMP | \
+			cut -d" " -f1 | gawk -v bmpvalue=${value} -v total=${totalnum} -vOFS='\t' '{print bmpvalue,$1/total,$1,total}' >> ${aname}_${bname}_chr11xchr22.stat
+	
+	done
+	
+	max_percent=`sort -k2nr ${aname}_${bname}_chr11xchr22.stat | sed -n '1p' | cut -f1`
 
-chr11=`sed -n '1p' ${aname}_${bname}.matchlist | gawk -vFS=',' '{print $1}'`
-chr22=`sed -n '2p' ${aname}_${bname}.matchlist | gawk -vFS=',' '{print $1}'`
-
-${dec}/coreSplitbyChromosomeGroup \
-	-i ${aname}_${bname}.score \
-	-l ${aname}.bed \
-	-f ${bname}.bed \
-	-m ${chr11},${chr22} \
-	-t ${aname}_${bname}.chrinfo > ${aname}_${bname}_chr11xchr22.score
-${dec}/coreSplitbyChromosomeGroup \
-	-i ${bname}_${aname}.score \
-	-l ${bname}.bed \
-	-f ${aname}.bed \
-	-m ${chr22},${chr11} \
-	-t ${bname}_${aname}.chrinfo > ${bname}_${aname}_chr22xchr11.score
-
-for value in 0 5 10 15 20 25 30 35 40 45 50 55 60 65 70 75 80 85 90 95 99;do
-
-	${dec}/coreSetWeight -i ${aname}_${bname}_chr11xchr22.score -a ${value} -f ${score_threshold-75} \
-		> ${aname}_${bname}_chr11xchr22.weighted_score
-
-	${dec}/coreSetWeight -i ${bname}_${aname}_chr22xchr11.score -a ${value} -f ${score_threshold-75} \
-		> ${bname}_${aname}_chr22xchr11.weighted_score
-
-	totalnum=`cat ${aname}.bed | wc -l`
-
-	${dec}/RBH -a ${aname}_${bname}_chr11xchr22.weighted_score -b ${bname}_${aname}_chr22xchr11.weighted_score \
-		> ${aname}_${bname}_chr11xchr22.BMP
-
-	wc -l ${aname}_${bname}_chr11xchr22.BMP | \
-		cut -d" " -f1 | gawk -v bmpvalue=${value} -v total=${totalnum} -vOFS='\t' '{print bmpvalue,$1/total,$1,total}' >> ${aname}_${bname}_chr11xchr22.stat
-
-done
-
-max_percent=`sort -k2nr ${aname}_${bname}_chr11xchr22.stat | sed -n '1p' | cut -f1`
-
-echo `gettime`"α = "${max_percent}"..."
-echo `gettime`"merge raw score..."
+	echo `gettime`"α = "${max_percent}"..."
+else
+	max_percent=0
+fi
 
 #===
 ${dec}/coreSetWeight -i ${aname}_${bname}.score \
