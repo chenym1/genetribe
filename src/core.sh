@@ -223,6 +223,7 @@ else
 fi
 
 #===
+echo `gettime`"merge raw score..."
 ${dec}/coreSetWeight -i ${aname}_${bname}.score \
         -a ${max_percent} \
 	-f ${score_threshold-75} \
