@@ -152,7 +152,7 @@ for key in ${aname}__${bname} ${bname}__${aname};do
 
 	${dec}/coreCBS -i ${key1}.${key2}.lifted.anchors -a ${key1}.bed -b ${key2}.bed -o ${keynew}
 
-	${dec}/coreCollinearityBlockDirection -i ${keynew}.colinearity_info -a ${key1}.bed -b ${key2}.bed -o ${keynew}
+	${dec}/coreCollinearityBlockDirection -i ${keynew}.collinearity_info -a ${key1}.bed -b ${key2}.bed -o ${keynew}
 
 	${dec}/coreMergeScore -i ${keynew}.score1 -c ${keynew}.block_pos -a ${key1}.bed -b ${key2}.bed > ${keynew}.score2
 

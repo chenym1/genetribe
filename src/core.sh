@@ -165,7 +165,7 @@ for key in ${aname}__${bname} ${bname}__${aname};do
 
 	${dec}/coreCBS -i ${key1}.${key2}.lifted.anchors -a ${key1}.bed -b ${key2}.bed -o ${keynew}
 
-	${dec}/coreCollinearityBlockDirection -i ${keynew}.colinearity_info -a ${key1}.bed -b ${key2}.bed -o ${keynew}
+	${dec}/coreCollinearityBlockDirection -i ${keynew}.collinearity_info -a ${key1}.bed -b ${key2}.bed -o ${keynew}
 
 	${dec}/coreMergeScore -i ${keynew}.score1 -c ${keynew}.block_pos -a ${key1}.bed -b ${key2}.bed > ${keynew}.score2
 
@@ -325,7 +325,7 @@ mv ${bname}_${aname}.total ../${bname}_${aname}.one2one
 mv ${aname}_${bname}.singleton ../
 mv ${bname}_${aname}.singleton ../
 mv ${aname}_${bname}.block_pos ${bname}_${aname}.block_pos ../
-mv ${aname}_${bname}.colinearity_info ${bname}_${aname}.colinearity_info ../
+mv ${aname}_${bname}.collinearity_info ${bname}_${aname}.collinearity_info ../
 cd ..
 
 cat ${aname}_${bname}.one2one | gawk -vOFS="\t" '{if($3=="RBH")print}' > ${aname}_${bname}.RBH

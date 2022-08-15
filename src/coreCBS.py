@@ -95,7 +95,7 @@ def count_median(block_dc,bed1tmp,bed2tmp):
 # final step
 def final(block_dc,pair_dc,bed1tmp,bed2tmp,outname):
 
-	out1 = open(outname+'.colinearity_info','w')
+	out1 = open(outname+'.collinearity_info','w')
 	#out2 = open(outname+'.block_pos','w')
 	block_num = 1
 	median = count_median(block_dc,bed1tmp,bed2tmp)
