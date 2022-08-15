@@ -27,7 +27,7 @@ import subprocess
 import os
 
 def PrintVersion() :
-	print ("Version: 1.2.0")
+	print ("Version: 1.2.1")
 
 argv_len = len(sys.argv)
 

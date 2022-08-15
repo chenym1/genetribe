@@ -111,7 +111,7 @@ logo () {
 	echo "   ==============================="
 	echo "  ||                             ||"
 	echo "  ||         GeneTribe           ||"
-	echo "  ||       Version: v1.2.0       ||"
+	echo "  ||       Version: v1.2.1       ||"
 	echo "  ||                             ||"
 	echo "   ==============================="
 	echo ""
@@ -325,6 +325,7 @@ mv ${bname}_${aname}.total ../${bname}_${aname}.one2one
 mv ${aname}_${bname}.singleton ../
 mv ${bname}_${aname}.singleton ../
 mv ${aname}_${bname}.block_pos ${bname}_${aname}.block_pos ../
+mv ${aname}_${bname}.colinearity_info ${bname}_${aname}.colinearity_info ../
 cd ..
 
 cat ${aname}_${bname}.one2one | gawk -vOFS="\t" '{if($3=="RBH")print}' > ${aname}_${bname}.RBH
