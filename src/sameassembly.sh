@@ -101,9 +101,11 @@ if [ "$not_file" != "" ];then
 fi
 #
 dec=`echo $(dirname $(readlink -f "$0")) | sed 's/src/bin/g'`
-rm -rf ./output
-mkdir ./output
-cd ./output
+
+#rm -rf ./output
+
+mkdir ./genetribe_output
+cd ./genetribe_output
 #
 
 ln -s ../${aname}.bed ./
@@ -137,5 +139,6 @@ cat ${bname}_${aname}.single_end | gawk -vOFS='\t' '{print $1,$2,"SBH"}' >>${bna
 #
 mv ${aname}_${bname}.one2one ${bname}_${aname}.one2one ${aname}_${bname}.one2many ${bname}_${aname}.one2many ../
 cd ..
-rm -rf ./output
+
+rm -rf ./genetribe_output
 echo `gettime`"done!"

@@ -39,9 +39,9 @@ def sh(cmd_String):
 
 def lns(name1,name2,confidence_stat):
 	DIR=os.path.dirname(sys.argv[0])
-	dirc = './output/'
+	dirc = './genetribe_output/'
 	if name1 != name2:
-		out_dic = './output/'
+		out_dic = './genetribe_output/'
 		sh(' '.join([DIR+'/coreFilterRedundancy','-i',dirc+name1+'_'+name2+'.blast','>',out_dic+name1+'_'+name2+'.blast2']))
 		sh(' '.join([DIR+'/coreFilterRedundancy','-i',dirc+name1+'_'+name1+'.blast','>',out_dic+name1+'_'+name1+'.blast2']))
 		sh(' '.join([DIR+'/coreFilterRedundancy','-i',dirc+name2+'_'+name1+'.blast','>',out_dic+name2+'_'+name1+'.blast2']))
@@ -66,7 +66,7 @@ def lns(name1,name2,confidence_stat):
 			sh(' '.join(['ln -s',confidence_path1,out_dic+name1+'.confidence']))
 			sh(' '.join(['ln -s',confidence_path1,out_dic+name2+'.confidence']))
 	else:
-		out_dic = './output/'
+		out_dic = './genetribe_output/'
 		name2 = name2+'itself'
 		sh(' '.join([DIR+'/coreFilterRedundancy','-i',dirc+name1+'_'+name1+'.blast','>',out_dic+name1+'_'+name2+'.blast2']))
 		blast_path1 = os.path.abspath(out_dic+name1+'_'+name2+'.blast2')

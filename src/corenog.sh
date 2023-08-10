@@ -122,7 +122,7 @@ ${dec}/corenog-lns \
 	-a ${aname} \
 	-b ${bname}
 
-cd ./output
+cd genetribe_output
 
 if [ "$aname"x = "$bname"x ];then
 	bname=${aname}itself
@@ -251,5 +251,5 @@ cat ${aname}_${bname}.one2one | gawk -vOFS="\t" '{if($3=="RBH")print}' > ${aname
 cat ${aname}_${bname}.one2one | gawk -vOFS="\t" '{if($3=="SBH")print}' > ${aname}_${bname}.SBH
 cat ${bname}_${aname}.one2one | gawk -vOFS="\t" '{if($3=="SBH")print}' > ${bname}_${aname}.SBH
 
-rm -rf output
+rm -rf genetribe_output
 echo `gettime`"done!"

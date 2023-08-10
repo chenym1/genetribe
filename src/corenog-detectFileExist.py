@@ -112,7 +112,7 @@ def blast(dicr2,name1,name2,evalue,num_threads,fa_str="."):
 	evalue=str(evalue)
 	dicr2 = dicr_gg(dicr2)
 	not_exist_blast = detect_blast_file(dicr2,name1,name2)
-	dicr = dicr_gg('./output/')
+	dicr = dicr_gg('./genetribe_output/')
 	tmp_out = dicr
 	if not os.path.exists(tmp_out):
 		os.makedirs(tmp_out)
