@@ -64,6 +64,8 @@ def detect_bed_file(name1,name2,confidence_stat=False):
 #
 def detect_blast_file(dicr,name1,name2):
 	dicr = dicr_gg(dicr)
+	dicr_curr = dicr_gg('./genetribe_output/')
+
 	if name1 != name2:
 		blast_file1 = dicr+name1+'_'+name2+'.blast'
 		blast_file2 = dicr+name2+'_'+name1+'.blast'
@@ -72,16 +74,34 @@ def detect_blast_file(dicr,name1,name2):
 		file_list = [blast_file1,blast_file2,onw_blast_file1,onw_blast_file2]
 		not_exist_list = []
 		for num in range(4):
+
+			file_name = file_list[num].split('/')
+			file_name = file_name[len(file_name)-1]
+
 			if not os.path.exists(file_list[num]):
-				not_exist_list.append(file_list[num])
+				if os.path.exists(file_list[num]+'.gz'):
+					sh('gunzip -c '+file_list[num]+' > '+dicr_curr+file_name)
+				else:
+					not_exist_list.append(file_list[num])
+			else:
+				sh('ln -s '+file_list[num]+' '+dicr_curr+file_name)
 
 	else:
 		not_exist_list = []
 		blast_file = dicr+name1+'_'+name2+'.blast'
 		file_list = [blast_file]
 		for num in range(1):
+
+			file_name = file_list[num].split('/')
+			file_name = file_name[len(file_name)-1]
+
 			if not os.path.exists(file_list[num]):
-				not_exist_list.append(file_list[num])
+				if os.path.exists(file_list[num]+'.gz'):
+					sh('gunzip -c '+file_list[num]+' > '+dicr_curr+file_name)
+				else:
+					not_exist_list.append(file_list[num])
+			else:
+				sh('ln -s '+file_list[num]+' '+dicr_curr+file_name)
 	
 	return not_exist_list
 
@@ -115,16 +135,18 @@ def blast(dicr2,name1,name2,evalue,num_threads,fa_str="."):
 		os.makedirs(tmp_out)
 	#
 	not_exist_blast = detect_blast_file(dicr2,name1,name2)
-	#
-	if len(not_exist_blast) == 0:
-		if name1 != name2:
-			sh('ln -s '+dicr2+name1+'_'+name2+'.blast '+dicr+name1+'_'+name2+'.blast')
-			sh('ln -s '+dicr2+name2+'_'+name1+'.blast '+dicr+name2+'_'+name1+'.blast')
-			sh('ln -s '+dicr2+name2+'_'+name2+'.blast '+dicr+name2+'_'+name2+'.blast')
-			sh('ln -s '+dicr2+name1+'_'+name1+'.blast '+dicr+name1+'_'+name1+'.blast')
-		else:
-			sh('ln -s '+dicr2+name1+'_'+name1+'.blast '+dicr+name1+'_'+name1+'.blast')
-	else:
+	
+	# if len(not_exist_blast) == 0:
+	# 	if name1 != name2:
+	# 		sh('ln -s '+dicr2+name1+'_'+name2+'.blast '+dicr+name1+'_'+name2+'.blast')
+	# 		sh('ln -s '+dicr2+name2+'_'+name1+'.blast '+dicr+name2+'_'+name1+'.blast')
+	# 		sh('ln -s '+dicr2+name2+'_'+name2+'.blast '+dicr+name2+'_'+name2+'.blast')
+	# 		sh('ln -s '+dicr2+name1+'_'+name1+'.blast '+dicr+name1+'_'+name1+'.blast')
+	# 	else:
+	# 		sh('ln -s '+dicr2+name1+'_'+name1+'.blast '+dicr+name1+'_'+name1+'.blast')
+	# else:
+
+	if len(not_exist_blast) != 0:
 		not_fasta = detect_fasta_file(name1,name2)
 		if len(not_fasta) > 0:
 			print ("\n[ERROR]:\n\t File cannot be found:"+' '.join(not_fasta))
@@ -158,22 +180,27 @@ def blast(dicr2,name1,name2,evalue,num_threads,fa_str="."):
 				sh('makeblastdb -in '+long_fa2+' -parse_seqids -hash_index -dbtype prot -out '+db2)
 				#
 				blast_task = []
+				
 				if dicr2+name1+'_'+name2+'.blast' in not_exist_blast:
 					blast_task.append('blastp -query '+long_fa1+' -db '+db2+' -evalue '+evalue+' -num_threads '+str(num_threads)+' -outfmt 6 -out '+dicr+name1+'_'+name2+'.blast')
-				else:
-					sh('ln -s '+dicr2+name1+'_'+name2+'.blast '+dicr+name1+'_'+name2+'.blast')
+				# else:
+				# 	sh('ln -s '+dicr2+name1+'_'+name2+'.blast '+dicr+name1+'_'+name2+'.blast')
+
 				if dicr2+name2+'_'+name1+'.blast' in not_exist_blast:
 					blast_task.append('blastp -query '+long_fa2+' -db '+db1+' -evalue '+evalue+' -num_threads '+str(num_threads)+' -outfmt 6 -out '+dicr+name2+'_'+name1+'.blast')
-				else:
-					sh('ln -s '+dicr2+name2+'_'+name1+'.blast '+dicr+name2+'_'+name1+'.blast')
+				# else:
+				# 	sh('ln -s '+dicr2+name2+'_'+name1+'.blast '+dicr+name2+'_'+name1+'.blast')
+
 				if dicr2+name1+'_'+name1+'.blast' in not_exist_blast:
 					blast_task.append('blastp -query '+long_fa1+' -db '+db1+' -evalue '+evalue+' -num_threads '+str(num_threads)+' -outfmt 6 -out '+dicr+name1+'_'+name1+'.blast')
-				else:
-					sh('ln -s '+dicr2+name1+'_'+name1+'.blast '+dicr+name1+'_'+name1+'.blast')
+				# else:
+				# 	sh('ln -s '+dicr2+name1+'_'+name1+'.blast '+dicr+name1+'_'+name1+'.blast')
+
 				if dicr2+name2+'_'+name2+'.blast' in not_exist_blast:
 					blast_task.append('blastp -query '+long_fa2+' -db '+db2+' -evalue '+evalue+' -num_threads '+str(num_threads)+' -outfmt 6 -out '+dicr+name2+'_'+name2+'.blast')
-				else:
-					sh('ln -s '+dicr2+name2+'_'+name2+'.blast '+dicr+name2+'_'+name2+'.blast')
+				# else:
+				# 	sh('ln -s '+dicr2+name2+'_'+name2+'.blast '+dicr+name2+'_'+name2+'.blast')
+
 				with concurrent.futures.ProcessPoolExecutor() as executor:
 					executor.map(sh,blast_task)
 				#
