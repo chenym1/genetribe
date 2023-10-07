@@ -320,7 +320,7 @@ for key in ${aname}__${bname} ${bname}__${aname};do
 done
 
 #===
-mv *.pdf ../
+#mv *.pdf ../
 mv ${aname}_${bname}.weighted_score ../${aname}_${bname}.one2many
 mv ${bname}_${aname}.weighted_score ../${bname}_${aname}.one2many
 mv ${aname}_${bname}.total ../${aname}_${bname}.one2one
