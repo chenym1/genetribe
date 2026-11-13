@@ -23,8 +23,8 @@
 set -e
 
 if [ -z "$1" ]; then
-        echo "The arguments is empty!"
-        exit 1
+	echo "The arguments is empty!"
+	exit 1
 fi
 
 gettime() {
@@ -38,15 +38,15 @@ count_collinearity=""
 Usage () {
 	echo ""
 	echo "Tool:  GeneTribe core"
-        echo "Usage: genetribe core -l <FirstName> -f <SecondName> [options]"
+	echo "Usage: genetribe core -l <FirstName> -f <SecondName> [options]"
 	echo ""
-        echo "Description:"
-        echo "  Core workflow of GeneTribe"
+	echo "Description:"
+	echo "  Core workflow of GeneTribe"
 	echo ""
-        echo "Options:"
-        echo "  -h         Show this message and exit"
-        echo "  -l <str>   Prefix name of first file"
-        echo "  -f <str>   Prefix name of second file"
+	echo "Options:"
+	echo "  -h         Show this message and exit"
+	echo "  -l <str>   Prefix name of first file"
+	echo "  -f <str>   Prefix name of second file"
 	echo "  -d <dir>   Pre-computed BLAST file in <dir> [default ./]"
 	echo "  -r         Calculate chromosome group score [default True] "
 	echo "                If not considering the same chromosome groups, add this parameter"
@@ -64,47 +64,47 @@ Usage () {
 	exit 1
 }
 while getopts "hl:f:d:rcs:e:n:b:m" opt
-do
-    case $opt in
-        h)
-                Usage
-                exit 1
-                ;;
-        l)
-                aname=$OPTARG
-                ;;
-        f)
-                bname=$OPTARG
-                ;;
-	d)
-		directory=$OPTARG
-		;;
-	r)
-		dont_stat_chromosome_group="-r"
-		;;
-	c)
-		stat_confidence="-c"
-		;;
-	s)
-		fa_str=$OPTARG
-		;;
-	e)
-		evalue=$OPTARG
-		;;
-	n)
-		num_threads=$OPTARG
-		;;
-	b)
-		score_threshold=$OPTARG
-		;;
-	m)
-		count_collinearity="-m"
-		;;
-        ?)
-                echo "Unknow argument!"
-                exit 1
-                ;;
-        esac
+	do
+		case $opt in
+			h)
+				Usage
+				exit 1
+				;;
+			l)
+				aname=$OPTARG
+				;;
+			f)
+				bname=$OPTARG
+				;;
+			d)
+				directory=$OPTARG
+				;;
+			r)
+				dont_stat_chromosome_group="-r"
+				;;
+			c)
+				stat_confidence="-c"
+				;;
+			s)
+				fa_str=$OPTARG
+				;;
+			e)
+				evalue=$OPTARG
+				;;
+			n)
+				num_threads=$OPTARG
+				;;
+			b)
+				score_threshold=$OPTARG
+				;;
+			m)
+				count_collinearity="-m"
+				;;
+			?)
+				echo "Unknow argument!"
+				exit 1
+			;;
+	esac
 done
 #
 dec=`echo $(dirname $(readlink -f "$0")) | sed 's/src/bin/g'`
@@ -129,7 +129,7 @@ ${dec}/coredetectFileExist \
 	-b ${bname} \
 	-e ${evalue-1e-5} \
 	-n ${num_threads-36} \
-	-f ${fa_str-.} \
+	-f ${fa_str-.}
 
 ${dec}/corelns \
 	-a ${aname} \
@@ -147,18 +147,18 @@ echo `gettime`"calculate BSR, CBS and Penalty..."
 for key in ${aname}__${bname} ${bname}__${aname};do
 
 	array=(${key//__/ })
-        array=${array[@]}
-        key1=`echo $array | gawk '{print $1}'`
-        key2=`echo $array | gawk '{print $2}'`
+	array=${array[@]}
+	key1=`echo $array | gawk '{print $1}'`
+	key2=`echo $array | gawk '{print $2}'`
 	keynew=${key1}_${key2}
 	${dec}/coreCalculateScore \
-                -i ${keynew}.blast2 \
-                -m ${keynew}.matchlist \
-                -a ${key1}.bed \
-                -b ${key2}.bed \
-                --oa ${key1}_${key1}.blast2 \
-                --ob ${key2}_${key2}.blast2 \
-                ${dont_stat_chromosome_group} \
+		-i ${keynew}.blast2 \
+		-m ${keynew}.matchlist \
+		-a ${key1}.bed \
+		-b ${key2}.bed \
+		--oa ${key1}_${key1}.blast2 \
+		--ob ${key2}_${key2}.blast2 \
+		${dont_stat_chromosome_group} \
 		${stat_confidence} \
 		-o ${keynew}.chrinfo > ${keynew}.score1
 
@@ -228,12 +228,12 @@ fi
 #===
 echo `gettime`"merge raw score..."
 ${dec}/coreSetWeight -i ${aname}_${bname}.score \
-        -a ${max_percent} \
+	-a ${max_percent} \
 	-f ${score_threshold-75} \
 	> ${aname}_${bname}.weighted_score
 
 ${dec}/coreSetWeight -i ${bname}_${aname}.score \
-        -a ${max_percent} \
+	-a ${max_percent} \
 	-f ${score_threshold-75} \
 	> ${bname}_${aname}.weighted_score
 

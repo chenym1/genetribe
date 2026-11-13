@@ -63,8 +63,9 @@ def lns(name1,name2,confidence_stat):
 		sh(' '.join(['cat',name1+'.chrlist | gawk "{print $1}"','| grep -v "^[[:space:]]*$"','>>',out_dic+name2+'_'+name1+'.matchlist']))
 		if confidence_stat:
 			confidence_path1 = os.path.abspath(name1+'.confidence')
+			confidence_path2 = os.path.abspath(name2+'.confidence')
 			sh(' '.join(['ln -s',confidence_path1,out_dic+name1+'.confidence']))
-			sh(' '.join(['ln -s',confidence_path1,out_dic+name2+'.confidence']))
+			sh(' '.join(['ln -s',confidence_path2,out_dic+name2+'.confidence']))
 	else:
 		out_dic = './genetribe_output/'
 		name2 = name2+'itself'
